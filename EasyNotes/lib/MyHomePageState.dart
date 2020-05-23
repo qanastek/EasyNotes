@@ -22,6 +22,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
   // All the notes (ChangeNotifier)
   Notes notes = Notes();
 
+  void _likeContent(Content item) {
+    setState(() {
+      item.favorite = !item.favorite;
+    });
+  }
+
   void _removeContent(Content item) {
     setState(() {
       notes.remove(item);
@@ -93,6 +99,11 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
           removeContent: (Content item) {
             setState(() {
               _removeContent(item);
+            });
+          },
+          likeContent: (Content item) {
+            setState(() {
+              _likeContent(item);
             });
           },
         ),

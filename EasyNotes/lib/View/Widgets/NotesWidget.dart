@@ -10,8 +10,9 @@ typedef ContentDeleteCallback = void Function(Content item);
 class NotesWidget extends StatelessWidget {
 
   final ContentDeleteCallback removeContent;
+  final ContentDeleteCallback likeContent;
 
-  NotesWidget({this.removeContent});
+  NotesWidget({this.removeContent, this.likeContent});
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +95,13 @@ class NotesWidget extends StatelessWidget {
             leading: Icon(
                 item.icon,
                 color: item.color
+            ),
+            trailing: IconButton(
+                icon: (item.favorite ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
+                color: Colors.red[500],
+                onPressed: () {
+                  this.likeContent(item);
+                },
             ),
           )
         );
