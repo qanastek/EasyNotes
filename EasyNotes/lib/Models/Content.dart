@@ -12,6 +12,7 @@ abstract class Content {
   Color color;
   DateTime creationDate;
   DateTime lastModification;
+  bool archived;
 
   Content(title,favorite,secured,password,description,icon,color) {
     this.title = title;
@@ -23,5 +24,6 @@ abstract class Content {
     this.color = color;
     this.creationDate = DateTime.now();
     this.lastModification = DateTime.now();
+    this.archived = false;
   }
 }

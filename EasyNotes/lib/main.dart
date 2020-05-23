@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/MyHomePageState.dart';
 
 void main() {
@@ -13,21 +14,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: MyColors.WHITE,
+        backgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'EasyNotes'), // Constructor root
     );
   }
-}
-
-/// Stateful root of the APP
-class MyHomePage extends StatefulWidget {
-
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  MyHomePageState createState() => MyHomePageState();
 }

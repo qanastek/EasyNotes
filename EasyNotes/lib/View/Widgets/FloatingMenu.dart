@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:phonecall/MyHomePageState.dart';
-import 'package:phonecall/Notes.dart';
-import 'package:phonecall/View/Widgets/AddNote.dart';
-import 'package:provider/provider.dart';
+import 'package:phonecall/Models/Content.dart';
+import 'package:phonecall/View/Widgets/AddFolder.dart';
 
-typedef ContentCallback = void Function(String name);
+typedef ContentAddContentCallback = void Function(String name);
+typedef ContentAddItemCallback = void Function(Content item);
 
 class FloatingMenu extends StatelessWidget {
 
-  final ContentCallback addContent;
+  final ContentAddContentCallback addContent;
+  final ContentAddItemCallback addItem;
 
-  FloatingMenu({this.addContent});
+  FloatingMenu({this.addContent, this.addItem});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class FloatingMenu extends StatelessWidget {
             backgroundColor: Colors.green,
             onTap: () {
 //              main.addContent("Note");
-              Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote()));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(addItem: addItem,)));
             }),
       ],
     );
