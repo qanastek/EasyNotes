@@ -17,9 +17,10 @@ class SideMenu extends StatelessWidget {
             ),
             decoration: BoxDecoration(
                 color: Colors.green,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/images/cover.jpg'))),
+//                image: DecorationImage(
+//                    fit: BoxFit.fill,
+//                    image: AssetImage('assets/images/cover.jpg'))
+            ),
           ),
 
           ListTile(

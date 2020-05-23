@@ -27,10 +27,60 @@ class NotesWidget extends StatelessWidget {
           key: ValueKey("item_$index"),
           direction: DismissDirection.horizontal,
           movementDuration: Duration(milliseconds: 300),
-          onDismissed: (direction) {
-            print("delete");
-            Provider.of<Notes>(context, listen: false).remove(item);
+
+          background: slideRightBackground(),
+          secondaryBackground: slideLeftBackground(),
+
+          // ignore: missing_return
+          confirmDismiss: (direction) async {
+
+            // Delete
+            if (direction == DismissDirection.endToStart) {
+
+              final bool res = await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+
+                    return AlertDialog(
+                      content: Text(
+                          "Are you sure you want to delete ${item.title}?"),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text(
+                            "Delete",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                          onPressed: () {
+
+                            // Delete the item
+                            Provider.of<Notes>(context, listen: false).remove(item);
+
+                            // Show a snackbar
+                            Scaffold
+                                .of(context)
+                                .showSnackBar(SnackBar(content: Text("${item.title} archived!")));
+
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
+              return res;
+            } else {
+              // TODO: Navigate to edit page;
+            }
           },
+
           child: ListTile(
             title: Text(
                 item.title,
@@ -50,16 +100,61 @@ class NotesWidget extends StatelessWidget {
     );
   }
 }
-//
-//ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
-//  title: Text(title,
-//      style: TextStyle(
-//        fontWeight: FontWeight.w500,
-//        fontSize: 20,
-//      )),
-//  subtitle: Text(subtitle),
-//  leading: Icon(
-//    icon,
-//    color: Colors.blue[500],
-//  ),
-//);
+
+Widget slideRightBackground() {
+  return Container(
+    color: Colors.green,
+    child: Align(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+          ),
+          Icon(
+            Icons.edit,
+            color: Colors.white,
+          ),
+          Text(
+            " Edit",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ],
+      ),
+      alignment: Alignment.centerLeft,
+    ),
+  );
+}
+
+Widget slideLeftBackground() {
+  return Container(
+    color: Colors.red,
+    child: Align(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Icon(
+            Icons.archive,
+            color: Colors.white,
+          ),
+          Text(
+            " Archive",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
+      alignment: Alignment.centerRight,
+    ),
+  );
+}
