@@ -58,6 +58,24 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      print(_selectedIndex);
+
+      if(_selectedIndex == 1) {
+
+        FloatingMenu(
+          addContent: (String name) {
+            setState(() {
+              _addContent(name);
+            });
+          },
+          addItem: (Content item) {
+            setState(() {
+              _addItem(item);
+            });
+          },
+        );
+      }
+
     });
   }
 
@@ -134,7 +152,6 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
           },
         ),
 
-
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
 
@@ -146,21 +163,14 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     Offset(4.0, 24.0),
                     Offset(24.0, 4.0),
                     [
-                      Colors.blue[900],
-                      Colors.greenAccent,
+                      MyColors.START_FADE,
+                      MyColors.END_FADE,
                     ],
                   );
                 },
                 child: Icon(Icons.favorite_border),
               ),
-              title: Container(
-                child: Text(
-                  'Restore',
-                  style: TextStyle(
-                      color: Colors.pink
-                  ),
-                ),
-              ),
+              title: Container(),
             ),
 
             BottomNavigationBarItem(
@@ -171,8 +181,8 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     Offset(4.0, 24.0),
                     Offset(24.0, 4.0),
                     [
-                      Colors.blue[900],
-                      Colors.greenAccent,
+                      MyColors.START_FADE,
+                      MyColors.END_FADE,
                     ],
                   );
                 },
@@ -189,21 +199,14 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     Offset(4.0, 24.0),
                     Offset(24.0, 4.0),
                     [
-                      Colors.blue[900],
-                      Colors.greenAccent,
+                      MyColors.START_FADE,
+                      MyColors.END_FADE,
                     ],
                   );
                 },
                 child: Icon(Icons.restore_from_trash),
               ),
-              title: Container(
-                child: Text(
-                  'Restore',
-                  style: TextStyle(
-                    color: Colors.pink
-                  ),
-                ),
-              ),
+              title: Container(),
             ),
 
           ],

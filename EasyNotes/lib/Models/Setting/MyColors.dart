@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 class MyColors {
 
+      static Color START_FADE = Colors.blue[900];
+      static Color END_FADE = Colors.greenAccent;
+
   static MaterialColor WHITE = const MaterialColor(0xFFFFFFFF,
       const {
         50 : const Color(0xFFFFFFFF),
