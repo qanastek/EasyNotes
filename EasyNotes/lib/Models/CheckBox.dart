@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Content.dart';
 
 class CheckBox {
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Content.dart';
 import 'package:phonecall/Models/CheckBox.dart';
+import 'package:phonecall/Models/Content.dart';
 
 class CheckList extends Content {
 

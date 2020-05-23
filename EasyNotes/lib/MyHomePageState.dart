@@ -22,6 +22,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
   // All the notes (ChangeNotifier)
   Notes notes = Notes();
 
+  void _removeContent(Content item) {
+    setState(() {
+      notes.remove(item);
+    });
+  }
+
   // Add folder
   void _addContent(String name) {
 
@@ -83,14 +89,20 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
         appBar: AppBar(
           title: Text("${widget.title} $_counter"),
         ),
-
-        body: NotesWidget(),
+        body: NotesWidget(
+          removeContent: (Content item) {
+            setState(() {
+              _removeContent(item);
+            });
+          },
+        ),
         floatingActionButton: FloatingMenu(
           addContent: (String name) {
             setState(() {
               _addContent(name);
             });
-          },),
+          },
+        ),
       ),
     );
   }

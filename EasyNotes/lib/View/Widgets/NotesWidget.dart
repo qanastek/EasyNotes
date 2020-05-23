@@ -1,17 +1,17 @@
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Notes.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/CheckBox.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Content.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Folder.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Human.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Note.dart';
-import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Student.dart';
 import 'package:provider/provider.dart';
 
+typedef ContentDeleteCallback = void Function(Content item);
+
 class NotesWidget extends StatelessWidget {
+
+  final ContentDeleteCallback removeContent;
+
+  NotesWidget({this.removeContent});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,9 @@ class NotesWidget extends StatelessWidget {
       itemCount: Provider.of<Notes>(context, listen: false).lenght, // How many elements
       itemBuilder: (BuildContext ctxt, int index) {
 
-        /// The current item
-        Content item = Provider.of<Notes>(context, listen: false).get(index);
+        /// The current item and list of notes
+        Notes notes = Provider.of<Notes>(context, listen: false);
+        Content item = notes.get(index);
 
         return Dismissible(
           key: ValueKey("item_$index"),
@@ -62,12 +63,12 @@ class NotesWidget extends StatelessWidget {
                           onPressed: () {
 
                             // Delete the item
-                            Provider.of<Notes>(context, listen: false).remove(item);
+                            removeContent(item);
 
                             // Show a snackbar
-                            Scaffold
-                                .of(context)
-                                .showSnackBar(SnackBar(content: Text("${item.title} archived!")));
+//                            Scaffold
+//                            .of(context)
+//                            .showSnackBar(SnackBar(content: Text("${item.title} archived!")));
 
                             Navigator.of(context).pop();
                           },
