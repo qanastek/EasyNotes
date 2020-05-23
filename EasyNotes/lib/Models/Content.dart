@@ -10,6 +10,8 @@ abstract class Content {
   String description;
   IconData icon;
   Color color;
+  DateTime creationDate;
+  DateTime lastModification;
 
   Content(title,favorite,secured,password,description,icon,color) {
     this.title = title;
@@ -19,5 +21,7 @@ abstract class Content {
     this.description = description;
     this.icon = icon;
     this.color = color;
+    this.creationDate = DateTime.now();
+    this.lastModification = DateTime.now();
   }
 }

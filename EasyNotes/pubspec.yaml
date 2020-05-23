@@ -24,8 +24,14 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # Content provider
   provider: ^4.1.2
+
+  # Speed dial
   flutter_speed_dial: ^1.2.5
+
+  # Search bar
+  flappy_search_bar: 1.4.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

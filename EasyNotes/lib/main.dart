@@ -2,11 +2,13 @@ import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/View/Widgets/AddFolder.dart';
 import 'package:phonecall/Models/CheckList.dart';
 import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Content.dart';
 import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Folder.dart';
 import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/Models/Note.dart';
 import 'package:phonecall/Notes.dart';
+import 'package:phonecall/View/Widgets/SideMenu.dart';
 import 'file:///C:/xampp2/htdocs/other_things/EasyNotes/EasyNotes/lib/View/Widgets/NotesWidget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -48,17 +50,8 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   // Counter
   int _counter = 0;
 
-  // Starting list
-  static List<Content> _content = List<Content>.generate(
-      5, (i) => Note(
-          "title $i",
-          false,
-          false,
-          null,
-          "description $i",
-          Colors.primaries[new Random().nextInt(Colors.primaries.length-1)]
-      )
-  );
+  // All the notes
+  Notes notes = Notes();
 
   // Add folder
   void _addContent(String name) {
@@ -109,31 +102,24 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
         }
       }
 
-      _content.add(item);
+      notes.add(item);
     });
   }
 
   /// The refresh method for the main page
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return ChangeNotifierProvider(
-      create: (_) => new Notes(),
+      create: (context) => notes,
       child: Scaffold(
+        drawer: SideMenu(),
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: Text("${widget.title} $_counter"),
         ),
-        body: Center(
-          // All the notes
-          child: NotesWidget(_content),
-        ),
+
+        body: NotesWidget(),
+
         floatingActionButton: SpeedDial(
           animatedIcon: AnimatedIcons.menu_close,
           overlayColor: Colors.white,
@@ -158,9 +144,12 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
               child: Icon(Icons.note, color: Colors.white),
               label: "Add note",
                 backgroundColor: Colors.green,
-              onTap: () => _addContent("Note")),
+              onTap: () {
+                // _addContent("Folder")
+                Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote()));
+              }),
           ],
-        ), // This trailing comma makes auto-formatting nicer for build methods.
+        ),
       ),
     );
   }
