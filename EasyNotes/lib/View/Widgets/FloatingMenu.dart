@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:phonecall/Models/Content.dart';
-import 'package:phonecall/View/Widgets/AddFolder.dart';
+import 'package:phonecall/View/Widgets/AddNote.dart';
 
 typedef ContentAddContentCallback = void Function(String name);
 typedef ContentAddItemCallback = void Function(Content item);

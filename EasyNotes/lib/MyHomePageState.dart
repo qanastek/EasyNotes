@@ -14,6 +14,7 @@ import 'package:phonecall/View/Widgets/SideMenu.dart';
 import 'package:phonecall/main.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as ui;
+import 'package:phonecall/View/Widgets/AddNote.dart';
 
 /// Stateful root of the APP
 class MyHomePage extends StatefulWidget {
@@ -60,20 +61,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
       _selectedIndex = index;
       print(_selectedIndex);
 
-      if(_selectedIndex == 1) {
+      switch(_selectedIndex) {
 
-        FloatingMenu(
-          addContent: (String name) {
-            setState(() {
-              _addContent(name);
-            });
-          },
-          addItem: (Content item) {
-            setState(() {
-              _addItem(item);
-            });
-          },
-        );
+        case 1:
+          print("middle");
+          showAddModal(context);
+          break;
       }
 
     });
@@ -227,6 +220,54 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
           },
         ),
       ),
+    );
+  }
+
+  /// Display the adding modal
+  void showAddModal(context) {
+
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+        ),
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (BuildContext bc){
+          return Container(
+            child: new Wrap(
+              children: <Widget>[
+
+                new ListTile(
+                    leading: new Icon(Icons.note_add),
+                    title: new Text('Note'),
+                    onTap: () => {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(addItem: _addItem,))),
+                    }
+                ),
+
+                new ListTile(
+                  leading: new Icon(Icons.playlist_add_check),
+                  title: new Text('CheckList'),
+                  onTap: () => {
+                    Navigator.pop(context),
+                    _addContent("CheckList"),
+                  },
+                ),
+
+                new ListTile(
+                  leading: new Icon(Icons.create_new_folder),
+                  title: new Text('Folder'),
+                  onTap: () => {
+                    Navigator.pop(context),
+                    _addContent("Folder"),
+                  },
+                ),
+
+              ],
+            ),
+          );
+        }
     );
   }
 }
