@@ -211,18 +211,18 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
         ),
 
         /// Floating menu
-//        floatingActionButton: FloatingMenu(
-//          addContent: (String name) {
-//            setState(() {
-//              _addContent(name);
-//            });
-//          },
-//          addItem: (Content item) {
-//            setState(() {
-//              _addItem(item);
-//            });
-//          },
-//        ),
+        floatingActionButton: FloatingMenu(
+          addContent: (String name) {
+            setState(() {
+              _addContent(name);
+            });
+          },
+          addItem: (Content item) {
+            setState(() {
+              _addItem(item);
+            });
+          },
+        ),
 
       ),
     );
