@@ -24,19 +24,30 @@ class Notes with ChangeNotifier {
   get notes {
     return _notes.where((e) => e.archived == false).toList();
   }
+
+  // Getter non archived notes
+  get bookmarks {
+    return _notes.where((e) => e.favorite == true).toList();
+  }
+
   // Getter archived notes
-  get archivedNotes {
+  get archives {
     return _notes.where((e) => e.archived == true).toList();
   }
 
-  // Getter
-  get lenght {
+  // Getter normal
+  get length {
     return notes.length;
   }
 
+  // Getter bookmarks
+  get bookmarksLength {
+    return bookmarks.length;
+  }
+
   // Getter
-  get lenghtArchived {
-    return archivedNotes.length;
+  get archivesLength {
+    return archives.length;
   }
 
   // Add item
@@ -46,7 +57,7 @@ class Notes with ChangeNotifier {
 
   // Add item
   Content geArchived(int index) {
-    return archivedNotes[index];
+    return archives[index];
   }
 
   // Add item
@@ -59,7 +70,7 @@ class Notes with ChangeNotifier {
   void remove(Content item) {
 //    _notes.remove(item);
     item.archived = true;
-    print(lenghtArchived);
+    print(archivesLength);
     notifyListeners();
   }
 }

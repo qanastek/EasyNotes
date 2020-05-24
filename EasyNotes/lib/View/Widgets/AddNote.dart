@@ -9,9 +9,11 @@ typedef ContentCallback = void Function(Content item);
 /// Stateful root of the APP
 class AddNote extends StatefulWidget {
 
+  final Note item;
+
   final ContentCallback addItem;
 
-  AddNote({this.addItem});
+  AddNote({this.addItem, this.item});
 
   @override
   AddNoteState createState() => AddNoteState();
@@ -22,7 +24,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
   // Current Note
-  Note item = Note("",false,false,null,"",Colors.greenAccent);
+//  Note item = Note("",false,false,null,"",Colors.greenAccent);
 
   // Controllers
   final titleText = TextEditingController();
@@ -31,7 +33,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
   /// Like/Dislike
   void like() {
     setState(() {
-      item.favorite = !item.favorite;
+      widget.item.favorite = !widget.item.favorite;
     });
   }
 
@@ -51,8 +53,32 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
   void changeColor(Color color) {
     setState(() {
-      item.color = color;
+      widget.item.color = color;
     });
+  }
+
+  /// Save
+  void save() {
+
+    print(titleText.text);
+    widget.item.title = titleText.text;
+
+    print(descriptionText.text);
+    widget.item.description = descriptionText.text;
+
+    print("Item color: ");
+    print(widget.item.color.toString());
+
+    // Add the item
+    widget.addItem(widget.item);
+
+    // Go back
+    Navigator.pop(context);
+
+    // Display a snackBar
+//                    Scaffold.of(context)
+//                    .showSnackBar(SnackBar(content: Text('Saved!')));
+
   }
 
   @override
@@ -63,17 +89,19 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 //        title: Text("Add Note"),
         actions: <Widget>[
 
+          /// Bookmark
           IconButton(
-            icon: (item.favorite ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
+            icon: (widget.item.favorite ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border)),
             color: Colors.red[500],
             onPressed: () {
               this.like();
             },
           ),
 
+          /// Choose color
           IconButton(
             icon: (Icon(Icons.color_lens)),
-            color: item.color != null ? item.color : Colors.white70,
+            color: widget.item.color != null ? widget.item.color : Colors.white70,
             onPressed: () {
               showDialog(
                 context: context,
@@ -82,7 +110,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                     title: Text('Select a color'),
                     content: SingleChildScrollView(
                       child: BlockPicker(
-                        pickerColor: item.color,
+                        pickerColor: widget.item.color,
                         onColorChanged: (color) {
                           changeColor(color);
                         },
@@ -94,10 +122,19 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
             },
           ),
 
+          /// Cancel
           IconButton(
-            icon: (Icon(Icons.delete_outline)),
+            icon: (Icon(Icons.delete_outline, color: Colors.red,)),
             onPressed: () {
               this.destroy();
+            },
+          ),
+
+          /// Save
+          IconButton(
+            icon: (Icon(Icons.check,color: Colors.green,)),
+            onPressed: () {
+              this.save();
             },
           ),
 
@@ -142,22 +179,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
                   // Check if valid
                   if (_formKey.currentState.validate()) {
-
-                    print(titleText.text);
-                    item.title = titleText.text;
-
-                    print(descriptionText.text);
-                    item.description = descriptionText.text;
-
-                    print("Item color: ");
-                    print(item.color.toString());
-
-                    // Add the item
-                    widget.addItem(item);
-
-                    // Display a snackBar
-//                    Scaffold.of(context)
-//                    .showSnackBar(SnackBar(content: Text('Saved!')));
+                    this.save();
                   }
                 },
                 child: Text('Save'),

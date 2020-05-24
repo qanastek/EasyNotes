@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Notes.dart';
 import 'package:provider/provider.dart';
+import 'package:phonecall/View/Widgets/AddNote.dart';
 
 typedef ContentDeleteCallback = void Function(Content item);
 
@@ -18,7 +19,7 @@ class NotesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ListView.builder(
-      itemCount: Provider.of<Notes>(context, listen: false).lenght, // How many elements
+      itemCount: Provider.of<Notes>(context, listen: false).length, // How many elements
       itemBuilder: (BuildContext ctxt, int index) {
 
         /// The current item and list of notes
@@ -78,8 +79,9 @@ class NotesWidget extends StatelessWidget {
                     );
                   });
               return res;
+
             } else {
-              // TODO: Navigate to edit page;
+                /// TODO: Modify here
             }
           },
 
@@ -97,7 +99,7 @@ class NotesWidget extends StatelessWidget {
                 color: item.color
             ),
             trailing: IconButton(
-                icon: (item.favorite ? Icon(Icons.favorite) : Icon(Icons.favorite_border)),
+                icon: (item.favorite ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border)),
                 color: Colors.red[500],
                 onPressed: () {
                   this.likeContent(item);

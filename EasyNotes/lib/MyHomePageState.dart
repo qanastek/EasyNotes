@@ -148,6 +148,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
 
+            /// Bookmarks
             BottomNavigationBarItem(
               icon: ShaderMask(
                 blendMode: BlendMode.srcIn,
@@ -161,11 +162,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     ],
                   );
                 },
-                child: Icon(Icons.favorite_border),
+                child: Icon(Icons.collections_bookmark),
               ),
               title: Container(),
             ),
 
+            /// Add modal
             BottomNavigationBarItem(
               icon: ShaderMask(
                 blendMode: BlendMode.srcIn,
@@ -184,6 +186,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
               title: Container(),
             ),
 
+            /// Garbage
             BottomNavigationBarItem(
               icon: ShaderMask(
                 blendMode: BlendMode.srcIn,
@@ -207,18 +210,20 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
           onTap: _onItemTapped,
         ),
 
-        floatingActionButton: FloatingMenu(
-          addContent: (String name) {
-            setState(() {
-              _addContent(name);
-            });
-          },
-          addItem: (Content item) {
-            setState(() {
-              _addItem(item);
-            });
-          },
-        ),
+        /// Floating menu
+//        floatingActionButton: FloatingMenu(
+//          addContent: (String name) {
+//            setState(() {
+//              _addContent(name);
+//            });
+//          },
+//          addItem: (Content item) {
+//            setState(() {
+//              _addItem(item);
+//            });
+//          },
+//        ),
+
       ),
     );
   }
@@ -242,7 +247,10 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     leading: new Icon(Icons.note_add),
                     title: new Text('Note'),
                     onTap: () => {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(addItem: _addItem,))),
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
+                        addItem: _addItem,
+                        item: Note("",false,false,null,"",Colors.greenAccent),
+                      ))),
                     }
                 ),
 
