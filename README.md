@@ -1,4 +1,6 @@
-![Preview](GithubAssets/Logo.png)
+<p align="center">
+   <img src="https://github.com/qanastek/EasyNotes/blob/master/GithubAssets/Logo.png" width="60%">
+</p>
 
 EasyNotes is an easy to use notes app with folders to manages your ideas and projects.
 
