@@ -1,8 +1,8 @@
-![Preview](GithubAssets/Logo.PNG)
+![Preview](GithubAssets/Logo.png)
 
 EasyNotes is an easy to use notes app with folders to manages your ideas and projects.
 
-![Preview](GithubAssets/Preview.PNG)
+![Preview](GithubAssets/Preview.png)
 
 ## Installation
 Here is the procedure to install this software :
