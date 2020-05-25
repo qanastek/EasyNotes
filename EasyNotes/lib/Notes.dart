@@ -17,7 +17,8 @@ class Notes with ChangeNotifier {
       false,
       null,
       "description $i",
-      Colors.primaries[new Random().nextInt(Colors.primaries.length-1)]
+      Colors.primaries[new Random().nextInt(Colors.primaries.length-1)],
+      null
   ));
 
   // Getter non archived notes

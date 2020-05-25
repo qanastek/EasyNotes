@@ -3,5 +3,7 @@ import 'package:phonecall/Models/Content.dart';
 
 class Note extends Content {
 
-  Note(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description, Icons.note,color);
+  DateTime expiredDate;
+
+  Note(title,favorite,secured,password,description,color, this.expiredDate): super(title, favorite, secured, password, description, Icons.note,color);
 }

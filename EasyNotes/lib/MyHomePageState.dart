@@ -102,7 +102,8 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
               false,
               null,
               "description N°$_counter",
-              Colors.primaries[new Random().nextInt(Colors.primaries.length-1)]
+              Colors.primaries[new Random().nextInt(Colors.primaries.length-1)],
+              null
           ));
           break;
         }
@@ -243,17 +244,19 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
             child: new Wrap(
               children: <Widget>[
 
+                /// Note
                 new ListTile(
                     leading: new Icon(Icons.note_add),
                     title: new Text('Note'),
                     onTap: () => {
                       Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
                         addItem: _addItem,
-                        item: Note("",false,false,null,"",Colors.greenAccent),
+                        item: Note("",false,false,null,"",Colors.greenAccent,null),
                       ))),
                     }
                 ),
 
+                /// TodoList
                 new ListTile(
                   leading: new Icon(Icons.playlist_add_check),
                   title: new Text('CheckList'),
@@ -263,6 +266,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                   },
                 ),
 
+                /// Folder
                 new ListTile(
                   leading: new Icon(Icons.create_new_folder),
                   title: new Text('Folder'),
