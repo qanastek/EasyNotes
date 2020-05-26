@@ -53,36 +53,115 @@ class NotesWidget extends StatelessWidget {
                   builder: (BuildContext context) {
 
                     return AlertDialog(
-                      content: Text(
-                          "Are you sure you want to delete ${item.title}?"),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(25.0),
+                          bottom: Radius.circular(25.0),
+                        ),
+                      ),
+                      contentPadding: EdgeInsets.only(
+                        left: 25,
+                        right: 25,
+                        top: 20,
+                        bottom: 25,
+                      ),
+
+                      /// Title
+                      title: Text(
+                        "Are you sure ?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: MyColors.CUSTOM_RED,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 30,
+                        ),
+                      ),
+
+                      /// Delete Illustration
+                      content: Image.asset(
+                        'images/empty.png',
+                        fit: BoxFit.cover,
+                        repeat: ImageRepeat.noRepeat,
+                        scale: 1,
+                      ),
+
+                      /// Buttons
                       actions: <Widget>[
-                        FlatButton(
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        FlatButton(
-                          child: Text(
-                            "Delete",
-                            style: TextStyle(color: Colors.red),
-                          ),
-                          onPressed: () {
 
-                            // Delete the item
-                            removeContent(item);
 
-                            // Show a snackbar
-//                            Scaffold
-//                            .of(context)
-//                            .showSnackBar(SnackBar(content: Text("${item.title} archived!")));
+                        /// Cancel
+//                        Container(
+//                          margin: const EdgeInsets.only(
+//                            top: 20,
+//                            bottom: 20,
+//                          ),
+//                          child: RaisedButton(
+//                            onPressed: () {
+//                              Navigator.of(context).pop();
+//                            },
+//                            shape: RoundedRectangleBorder(
+//                              borderRadius: BorderRadius.circular(80.0),
+//                            ),
+//                            padding: EdgeInsets.all(0),
+//                            child: Text(
+//                              'CANCEL',
+//                              style: TextStyle(
+//                                fontSize: 27,
+//                                fontFamily: "Roboto",
+//                                fontWeight: FontWeight.w300,
+//                                color: Colors.white,
+//                              ),
+//                            ),
+//                          ),
+//                        ),
 
-                            Navigator.of(context).pop();
-                          },
-                        ),
+                        /// Create
+//                        Container(
+//                          margin: const EdgeInsets.only(
+//                            top: 20,
+//                            bottom: 20,
+//                          ),
+//                          child: RaisedButton(
+//                            onPressed: () {
+//
+//                              // Delete the item
+//                              removeContent(item);
+//
+//                              // Show a snackbar
+////                            Scaffold
+////                            .of(context)
+////                            .showSnackBar(SnackBar(content: Text("${item.title} archived!")));
+//
+//                              Navigator.of(context).pop();
+//                            },
+//                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+//                            padding: EdgeInsets.all(0.0),
+//                            child: Ink(
+//                              decoration: BoxDecoration(
+//                                  gradient: LinearGradient(
+//                                    colors: [Color(0xff69d9cc), Color(0xff50ff8c)],
+//                                    begin: Alignment.topLeft,
+//                                    end: Alignment.bottomRight,
+//                                  ),
+//                                  borderRadius: BorderRadius.circular(50.0)
+//                              ),
+//                              child: Container(
+//                                alignment: Alignment.center,
+//                                padding: EdgeInsets.all(10),
+//                                child: Text(
+//                                  'CREATE',
+//                                  style: TextStyle(
+//                                    fontSize: 27,
+//                                    fontFamily: "Roboto",
+//                                    fontWeight: FontWeight.w300,
+//                                    color: Colors.white,
+//                                  ),
+//                                ),
+//                              ),
+//                            ),
+//                          ),
+//                        ),
+
                       ],
                     );
                   });
@@ -158,6 +237,7 @@ class NotesWidget extends StatelessWidget {
                 /// Open the item view
                 Navigator.push(context,MaterialPageRoute(builder: (context) => ShowNote(
                   addItem: addItem,
+                  removeItem: removeContent,
                   item: item,
                 )));
               }

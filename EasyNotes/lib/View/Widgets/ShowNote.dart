@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:phonecall/Icons/add_icons_icons.dart';
+import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Note.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:intl/intl.dart';
+import 'package:phonecall/View/Widgets/AddNote.dart';
 
 typedef ContentCallback = void Function(Content item);
 
@@ -16,8 +19,9 @@ class ShowNote extends StatefulWidget {
   final Note item;
 
   final ContentCallback addItem;
+  final ContentCallback removeItem;
 
-  ShowNote({this.addItem, this.item});
+  ShowNote({this.addItem,this.removeItem, this.item});
 
   @override
   ShowNoteState createState() => ShowNoteState();
@@ -44,6 +48,11 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
   /// Destroy the current note
   void destroy() {
     setState(() {
+
+      // Delete the item
+      widget.removeItem(widget.item);
+
+      // Go back
       Navigator.pop(context);
     });
   }
@@ -166,77 +175,6 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
         /// Others buttons
         actions: <Widget>[
 
-          /// Choose color
-          IconButton(
-            icon: (FaIcon(FontAwesomeIcons.solidCircle)),
-            color: widget.item.color != null ? widget.item.color : Colors.white70,
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 15,
-                      vertical: 15,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(50),
-                          topRight: Radius.circular(50),
-                          bottomLeft: Radius.circular(50),
-                          bottomRight: Radius.circular(50)
-                      ),
-                    ),
-                    content: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 0,
-                        vertical: 0,
-                      ),
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 0,
-                        vertical: 0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-
-                          /// Title
-                          Text(
-                            'Colors',
-                            style: TextStyle(
-                              fontSize: 30,
-                              color: MyColors.CUSTOM_RED,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          /// Colors palette
-                          SingleChildScrollView(
-                            padding: EdgeInsets.only(
-                              top: 25,
-                              bottom: 0,
-                            ),
-                            child: BlockPicker(
-                              availableColors: MyColors.COLORS_PALLETTE,
-                              pickerColor: widget.item.color,
-                              onColorChanged: (color) {
-                                changeColor(color);
-                              },
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-
           /// Clock
           IconButton(
             icon: (widget.item.expiredDate != null ? Icon(Icons.alarm) : Icon(Icons.add_alarm)),
@@ -255,29 +193,33 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
             },
           ),
 
-          /// Secure
+          /// Share
           IconButton(
-            icon: (widget.item.favorite ? Icon(Icons.lock_outline) : Icon(Icons.lock_open)),
+            icon: Icon(AddIcons.plane, color: MyColors.CUSTOM_RED,),
             color: MyColors.CUSTOM_RED,
             onPressed: () {
-              /// TODO: Open password modal
-              this.like();
+              /// TODO: Share here
             },
           ),
 
-          /// Cancel
+          /// Edit
+          IconButton(
+            icon: (Icon(Icons.edit,color: MyColors.CUSTOM_RED,)),
+            onPressed: () {
+
+              // Go edit activity
+              Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
+                addItem: widget.addItem,
+                item: widget.item,
+              )));
+            },
+          ),
+
+          /// Delete
           IconButton(
             icon: (Icon(Icons.delete_outline, color: MyColors.CUSTOM_RED,)),
             onPressed: () {
               this.destroy();
-            },
-          ),
-
-          /// Save
-          IconButton(
-            icon: (Icon(Icons.check,color: Colors.green,)),
-            onPressed: () {
-              this.save();
             },
           ),
 
