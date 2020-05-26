@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:phonecall/Icons/add_icons_icons.dart';
 import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Folder.dart';
@@ -244,36 +245,233 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
             child: new Wrap(
               children: <Widget>[
 
+                /// Separator
+                Center(
+                  child: Container(
+                    height: 8,
+                    width: 80,
+                    margin: EdgeInsets.only(
+                      top: 20,
+                      bottom: 5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: MyColors.CUSTOM_RED,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.15),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: Offset(0, 3), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                /// Folder
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: 20,
+                  ),
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 2,
+                    bottom: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: ListTile(
+                    leading: new Icon(
+                      AddIcons.folder,
+                      color: MyColors.CUSTOM_RED,
+                      size: 30,
+                    ),
+                    title: new Text(
+                      'New folder',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFFE15A61),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      top: 7,
+                      bottom: 7,
+                    ),
+                    subtitle: new Text(
+                      'Create a new folder where you can add notes to.',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFFFF8C8E),
+                        fontWeight: FontWeight.w300,
+                        fontSize: 15,
+                      ),
+                    ),
+                    onTap: () => {
+                      Navigator.pop(context),
+                      _addContent("Folder"),
+                    },
+                  ),
+                ),
+
                 /// Note
-                new ListTile(
-                    leading: new Icon(Icons.note_add),
-                    title: new Text('Note'),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 5,
+                    bottom: 20,
+                  ),
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 2,
+                    bottom: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: ListTile(
+                    leading: new Icon(
+                      AddIcons.note,
+                      color: MyColors.CUSTOM_RED,
+                      size: 30,
+                    ),
+                    title: new Text(
+                      'New text note',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFFE15A61),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      top: 7,
+                      bottom: 7,
+                    ),
+                    subtitle: new Text(
+                      'Quickly add a task to your notes.',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFFFF8C8E),
+                        fontWeight: FontWeight.w300,
+                        fontSize: 15,
+                      ),
+                    ),
                     onTap: () => {
                       Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
                         addItem: _addItem,
                         item: Note("",false,false,null,"",Colors.greenAccent,null),
                       ))),
-                    }
+                    },
+                  ),
                 ),
 
                 /// TodoList
-                new ListTile(
-                  leading: new Icon(Icons.playlist_add_check),
-                  title: new Text('CheckList'),
-                  onTap: () => {
-                    Navigator.pop(context),
-                    _addContent("CheckList"),
-                  },
-                ),
-
-                /// Folder
-                new ListTile(
-                  leading: new Icon(Icons.create_new_folder),
-                  title: new Text('Folder'),
-                  onTap: () => {
-                    Navigator.pop(context),
-                    _addContent("Folder"),
-                  },
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 5,
+                    bottom: 20,
+                  ),
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 2,
+                    bottom: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.15),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: ListTile(
+                    leading: new Icon(
+                      AddIcons.checklist,
+                      color: MyColors.CUSTOM_RED,
+                      size: 30,
+                    ),
+                    title: new Text(
+                      'New todo list',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFFE15A61),
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                      ),
+                    ),
+                    contentPadding: EdgeInsets.only(
+                      top: 7,
+                      bottom: 7,
+                    ),
+                    subtitle: new Text(
+                      'Create a list to store your ideas.',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: Color(0xFFFF8C8E),
+                        fontWeight: FontWeight.w300,
+                        fontSize: 15,
+                      ),
+                    ),
+                    onTap: () => {
+                      Navigator.pop(context),
+                      _addContent("CheckList"),
+                    },
+                  ),
                 ),
 
               ],
