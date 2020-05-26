@@ -1,8 +1,13 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
+import 'package:phonecall/Models/Folder.dart';
+import 'package:phonecall/Models/Note.dart';
+import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/Notes.dart';
+import 'package:phonecall/View/Widgets/ShowNote.dart';
 import 'package:provider/provider.dart';
 import 'package:phonecall/View/Widgets/AddNote.dart';
 
@@ -12,12 +17,14 @@ class NotesWidget extends StatelessWidget {
 
   final ContentDeleteCallback removeContent;
   final ContentDeleteCallback likeContent;
+  final ContentDeleteCallback addItem;
 
-  NotesWidget({this.removeContent, this.likeContent});
+  NotesWidget({this.removeContent, this.likeContent, this.addItem});
 
   @override
   Widget build(BuildContext context) {
 
+    /// Build all the items elements
     return ListView.builder(
       itemCount: Provider.of<Notes>(context, listen: false).length, // How many elements
       itemBuilder: (BuildContext ctxt, int index) {
@@ -26,6 +33,7 @@ class NotesWidget extends StatelessWidget {
         Notes notes = Provider.of<Notes>(context, listen: false);
         Content item = notes.get(index);
 
+        /// Slide left and right
         return Dismissible(
           key: ValueKey("item_$index"),
           direction: DismissDirection.horizontal,
@@ -37,7 +45,7 @@ class NotesWidget extends StatelessWidget {
           // ignore: missing_return
           confirmDismiss: (direction) async {
 
-            // Delete
+            /// Delete
             if (direction == DismissDirection.endToStart) {
 
               final bool res = await showDialog(
@@ -80,31 +88,96 @@ class NotesWidget extends StatelessWidget {
                   });
               return res;
 
-            } else {
-                /// TODO: Modify here
+            }
+            /// TODO: Modify
+            else {
+
+              // Edit Note
+              if(item is Note) {
+
+                // Go edit activity
+                Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
+                  addItem: addItem,
+                  item: item,
+                )));
+              }
+              // Edit Folder
+              else if(item is Folder) {
+
+                print("Folder");
+              }
+              // Edit TodoList
+              else if(item is CheckList) {
+
+                print("TodoList");
+              }
+
             }
           },
 
+          /// Item element
           child: ListTile(
+
+            /// Title
             title: Text(
                 item.title,
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 20
                 )
             ),
-            subtitle: Text(item.description),
+
+            /// SubTitle
+            subtitle: Text(
+              item.description,
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            /// Leading icon
             leading: Icon(
                 item.icon,
                 color: item.color
             ),
+
+            /// Back icon
             trailing: IconButton(
-                icon: (item.favorite ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border)),
+                icon: (item.favorite ? Icon(Icons.bookmark, color: MyColors.CUSTOM_RED,) : Icon(Icons.bookmark_border, color: MyColors.CUSTOM_RED)),
                 color: Colors.red[500],
                 onPressed: () {
                   this.likeContent(item);
                 },
             ),
+
+            /// OnClick
+            onTap: () {
+
+              /// Note
+              if(item is Note) {
+
+                /// Open the item view
+                Navigator.push(context,MaterialPageRoute(builder: (context) => ShowNote(
+                  addItem: addItem,
+                  item: item,
+                )));
+              }
+
+              /// TodoList
+              else if(item is CheckList) {
+
+                /// Open the item view
+                /// TODO: Add view here
+              }
+
+              /// Folder
+              else if(item is Folder) {
+
+                /// Open the item view
+                /// TODO: Add view here
+              }
+
+            },
+
           )
         );
       }

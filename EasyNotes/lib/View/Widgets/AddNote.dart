@@ -58,8 +58,6 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
       if(widget.item.expiredDate == null) {
 
         /// TODO: Open remainder modal and collect the value.
-        ///
-        widget.item.expiredDate = DateTime.now();
 
         /// Open the modal
         showModalBottomSheet(
@@ -148,6 +146,9 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
 
+    titleText.text = widget.item.title;
+    descriptionText.text = widget.item.description;
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: AppBar(
@@ -173,7 +174,10 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    /// TODO
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 15,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(50),
@@ -213,6 +217,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                           SingleChildScrollView(
                             padding: EdgeInsets.only(
                               top: 25,
+                              bottom: 0,
                             ),
                             child: BlockPicker(
                               availableColors: MyColors.COLORS_PALLETTE,

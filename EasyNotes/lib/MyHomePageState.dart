@@ -132,9 +132,15 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
       create: (context) => notes,
       child: Scaffold(
 
-        drawer: SideMenu(),
+//        drawer: SideMenu(),
 
+        /// Body
         body: NotesWidget(
+          addItem: (Content item) {
+            setState(() {
+              _addItem(item);
+            });
+          },
           removeContent: (Content item) {
             setState(() {
               _removeContent(item);
@@ -147,6 +153,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
           },
         ),
 
+        /// NavigationBar
         bottomNavigationBar: BottomNavigationBar(
           items: <BottomNavigationBarItem>[
 
@@ -376,7 +383,8 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                       color: MyColors.CUSTOM_RED,
                       size: 30,
                     ),
-                    title: new Text(
+
+                    title: Text(
                       'New text note',
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -389,7 +397,8 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                       top: 7,
                       bottom: 7,
                     ),
-                    subtitle: new Text(
+
+                    subtitle: Text(
                       'Quickly add a task to your notes.',
                       textAlign: TextAlign.left,
                       style: TextStyle(
@@ -398,6 +407,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                         fontSize: 15,
                       ),
                     ),
+
                     onTap: () => {
                       Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
                         addItem: _addItem,
