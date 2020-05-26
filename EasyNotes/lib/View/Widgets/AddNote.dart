@@ -127,7 +127,11 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
     // Add the item
     widget.addItem(widget.item);
 
+    // Change edition date
+    widget.item.editDate = DateTime.now();
+
     // Go back
+    Navigator.pop(context);
     Navigator.pop(context);
 
     // Display a snackBar
@@ -409,10 +413,8 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                     child: RaisedButton(
                       onPressed: () {
 
-                        // Check if valid
-                        if (_formKey.currentState.validate()) {
-                          this.destroy();
-                        }
+                        /// Cancel
+                        this.destroy();
                       },
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                       padding: EdgeInsets.all(0),

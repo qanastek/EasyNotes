@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:phonecall/Models/Setting/MyColors.dart';
 
 abstract class Content {
 
@@ -14,6 +15,7 @@ abstract class Content {
   DateTime lastModification;
   bool archived;
 
+  /// Constructor
   Content(title,favorite,secured,password,description,icon,color) {
     this.title = title;
     this.favorite = favorite;
@@ -26,4 +28,21 @@ abstract class Content {
     this.lastModification = DateTime.now();
     this.archived = false;
   }
+
+  /// Return the description according to the type
+  String getDescription();
+
+  /// Get color
+  Color getColor() {
+
+    if(this.color == null) {
+
+      return MyColors.randomColor();
+    }
+
+    return this.color;
+  }
+
+  /// Get icon
+  IconData getIcon();
 }

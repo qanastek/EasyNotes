@@ -31,4 +31,7 @@ class AddIcons {
   static const IconData pin = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData lock = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData edit = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData document = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData google_docs = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData paper = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }

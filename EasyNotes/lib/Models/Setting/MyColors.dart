@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -33,6 +35,10 @@ class MyColors {
         Color(0xFFF1B9A3),
         Color(0xFFF8D6ED),
       ];
+
+      static Color randomColor() {
+        return MyColors.COLORS_PALLETTE[Random().nextInt(MyColors.COLORS_PALLETTE.length)];
+      }
 
       static MaterialColor WHITE = const MaterialColor(0xFFFFFFFF,
           const {

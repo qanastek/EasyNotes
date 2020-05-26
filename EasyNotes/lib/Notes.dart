@@ -30,7 +30,7 @@ class Notes with ChangeNotifier {
   
     Simple syrup you can easily make ahead and chill for later use. If you have a bunch of lemons you need to process, you can juice them and freeze the juice too. $i
     ''',
-      Colors.primaries[new Random().nextInt(Colors.primaries.length-1)],
+      null,
       null
   ));
 

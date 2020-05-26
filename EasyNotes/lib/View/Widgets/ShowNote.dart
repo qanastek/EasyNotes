@@ -20,8 +20,9 @@ class ShowNote extends StatefulWidget {
 
   final ContentCallback addItem;
   final ContentCallback removeItem;
+  final ContentCallback likeItem;
 
-  ShowNote({this.addItem,this.removeItem, this.item});
+  ShowNote({this.addItem, this.removeItem, this.likeItem, this.item});
 
   @override
   ShowNoteState createState() => ShowNoteState();
@@ -31,15 +32,13 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
 
   final _formKey = GlobalKey<FormState>();
 
-  // Current Note
-//  Note item = Note("",false,false,null,"",Colors.greenAccent);
-
   // Controllers
   final titleText = TextEditingController();
   final descriptionText = TextEditingController();
 
   /// Like/Dislike
   void like() {
+
     setState(() {
       widget.item.favorite = !widget.item.favorite;
     });
@@ -226,6 +225,8 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
         ],
       ),
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
         child: Padding(
           padding: EdgeInsets.only(
             top: 10,
@@ -238,7 +239,7 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
             children: <Widget>[
 
               /// Title
-              Text(
+              SelectableText(
                 widget.item.title.substring(0,1).toUpperCase() + widget.item.title.substring(1),
                 style: TextStyle(
                   color: Color(0xFFF2A8AB),
@@ -252,7 +253,7 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
                 margin: EdgeInsets.only(
                   top: 15,
                 ),
-                child: Text(
+                child: SelectableText(
                   DateFormat.yMMMd().format(widget.item.creationDate),
                   style: TextStyle(
                     color: Color(0xFFDDBFB8),
@@ -267,13 +268,23 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
                 margin: EdgeInsets.only(
                   top: 20,
                 ),
-                child: Text(
+                child: SelectableText(
                   widget.item.description,
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     color: Color(0xFFDEC1BA),
                     fontWeight: FontWeight.w400,
                     fontSize: 22,
+                  ),
+                  cursorColor: MyColors.CUSTOM_RED,
+                  cursorWidth: 3,
+                  showCursor: true,
+                  scrollPhysics: BouncingScrollPhysics(),
+                  toolbarOptions: ToolbarOptions(
+                    copy: true,
+                    cut: false,
+                    paste: false,
+                    selectAll: true,
                   ),
                 ),
               ),
