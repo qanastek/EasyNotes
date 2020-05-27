@@ -13,7 +13,7 @@ import 'package:phonecall/Models/Note.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/FloatingMenu.dart';
-import 'package:phonecall/View/Widgets/NotesWidget.dart';
+import 'package:phonecall/View/Widgets/DisplayContent.dart';
 import 'package:phonecall/View/Widgets/SideMenu.dart';
 import 'package:phonecall/main.dart';
 import 'package:provider/provider.dart';
@@ -37,12 +37,27 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
   // Counter
   int _counter = 0;
 
+  // Current display mode
+  String _mode = "normal";
+
   // All the notes (ChangeNotifier)
   Notes notes = Notes();
+
+  /// Constructor
+  MyHomePageState() {
+    /// Fill up the data
+    notes.fillUp();
+  }
 
   void _likeContent(Content item) {
     setState(() {
       item.favorite = !item.favorite;
+    });
+  }
+
+  void _inside(Notes n) {
+    setState(() {
+      notes = n;
     });
   }
 
@@ -127,117 +142,142 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
     });
   }
 
+  Future<bool> _onBackPressed() {
+
+    /// If have ancestor
+    if(notes.parent != null) {
+
+      /// Go to them
+      _inside(notes.parent);
+    }
+    else {
+      print("No ancestor");
+      print(notes.length);
+      print(notes.parent);
+    }
+  }
+
   /// The refresh method for the main page
   @override
   Widget build(BuildContext context) {
 
     return ChangeNotifierProvider(
       create: (context) => notes,
-      child: Scaffold(
-        backgroundColor: Color(0xFFFEEBDF),
+      child: WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+
+          /// Main background color
+          backgroundColor: Color(0xFFFEEBDF),
 
 //        drawer: SideMenu(),
 
-        /// Body
-        body: Container(
-          padding: const EdgeInsets.only(
-            top: 20,
-            bottom: 20,
-            left: 20,
-            right: 20,
+          /// Body
+          body: Container(
+            padding: const EdgeInsets.only(
+              top: 20,
+              bottom: 20,
+              left: 20,
+              right: 20,
+            ),
+            child: DisplayContent(
+              notes: notes,
+              addItem: (Content item) {
+                setState(() {
+                  _addItem(item);
+                });
+              },
+              removeContent: (Content item) {
+                setState(() {
+                  _removeContent(item);
+                });
+              },
+              likeContent: (Content item) {
+                setState(() {
+                  _likeContent(item);
+                });
+              },
+              showAddTodoListModal: (context,Content item) {
+                setState(() {
+                  showAddTodoListModal(context,item);
+                });
+              },
+              inside: (Notes notes) {
+                setState(() {
+                  _inside(notes);
+                });
+              },
+            ),
           ),
-          child: NotesWidget(
-            addItem: (Content item) {
-              setState(() {
-                _addItem(item);
-              });
-            },
-            removeContent: (Content item) {
-              setState(() {
-                _removeContent(item);
-              });
-            },
-            likeContent: (Content item) {
-              setState(() {
-                _likeContent(item);
-              });
-            },
-            showAddTodoListModal: (context,Content item) {
-              setState(() {
-                showAddTodoListModal(context,item);
-              });
-            },
-          ),
-        ),
 
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-        /// NavigationBar
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          color: Colors.white,
-          notchMargin: -5.0,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
+          /// NavigationBar
+          bottomNavigationBar: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            color: Colors.white,
+            notchMargin: -5.0,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
 
-              /// Bookmarks
-              IconButton(
-                onPressed: () {
-                  print("Bookmarks");
-                },
-                icon: ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                  shaderCallback: (Rect bounds) {
-                    return ui.Gradient.linear(
-                      Offset(4.0, 24.0),
-                      Offset(24.0, 4.0),
-                      [Color(0xFFE58981), Color(0xFFF8D6B2)],
-                    );
+                /// Bookmarks
+                IconButton(
+                  onPressed: () {
+                    print("Bookmarks");
                   },
-                  child: Icon(Icons.collections_bookmark),
+                  icon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) {
+                      return ui.Gradient.linear(
+                        Offset(4.0, 24.0),
+                        Offset(24.0, 4.0),
+                        [Color(0xFFE58981), Color(0xFFF8D6B2)],
+                      );
+                    },
+                    child: Icon(Icons.collections_bookmark),
+                  ),
                 ),
-              ),
 
-              /// Garbage
-              IconButton(
-                onPressed: () {
-                  print("Garbage");
-                },
-                icon: ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                  shaderCallback: (Rect bounds) {
-                    return ui.Gradient.linear(
-                      Offset(4.0, 24.0),
-                      Offset(24.0, 4.0),
-                      [Color(0xFFE58981), Color(0xFFF8D6B2)],
-                    );
+                /// Garbage
+                IconButton(
+                  onPressed: () {
+                    print("Garbage");
                   },
-                  child: Icon(Icons.restore_from_trash),
+                  icon: ShaderMask(
+                    blendMode: BlendMode.srcIn,
+                    shaderCallback: (Rect bounds) {
+                      return ui.Gradient.linear(
+                        Offset(4.0, 24.0),
+                        Offset(24.0, 4.0),
+                        [Color(0xFFE58981), Color(0xFFF8D6B2)],
+                      );
+                    },
+                    child: Icon(Icons.restore_from_trash),
+                  ),
                 ),
-              ),
 
-            ],
+              ],
+            ),
           ),
-        ),
 
-        /// Floating menu centered
-        floatingActionButton: Container(
-          width: 70.0,
-          height: 70.0,
-          margin: const EdgeInsets.all(15),
-          child: ClipOval(
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      colors: [Color(0xFFF8D6B2), Color(0xFFE58981)])
-              ),
-              child: IconButton(
+          /// Floating menu centered
+          floatingActionButton: Container(
+            width: 70.0,
+            height: 70.0,
+            margin: const EdgeInsets.all(15),
+            child: ClipOval(
+              child: Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [Color(0xFFF8D6B2), Color(0xFFE58981)])
+                ),
+                child: IconButton(
                   onPressed: () {
                     print("open");
                     showAddModal(context);
@@ -246,12 +286,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                       Icons.add
                   ),
                   color: Colors.white,
+                ),
               ),
             ),
           ),
-        ),
 
-        /// Floating menu right
+          /// Floating menu right
 //        floatingActionButton: FloatingMenu(
 //          addContent: (String name) {
 //            setState(() {
@@ -266,6 +306,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
 //        ),
 
 
+        ),
       ),
     );
   }

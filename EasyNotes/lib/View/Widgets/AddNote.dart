@@ -482,7 +482,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            'CREATE',
+                            'SAVE',
                             style: TextStyle(
                               fontSize: 27,
                               fontFamily: "Roboto",

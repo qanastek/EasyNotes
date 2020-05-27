@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 abstract class Content {
 
-  String id;
+  final String id = md5.convert(utf8.encode(DateTime.now().toString())).toString();
   String title;
   bool favorite;
   bool secured;
@@ -19,7 +21,6 @@ abstract class Content {
 
   /// Constructor
   Content(title,favorite,secured,password,description,icon,color) {
-    this.id = Uuid().toString();
     this.title = title;
     this.favorite = favorite;
     this.secured = secured;
