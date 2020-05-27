@@ -75,7 +75,7 @@ class NotesWidget extends StatelessWidget {
           child: GridTile(
             child: Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-              elevation: 2,
+              elevation: 1.5,
               child: Column(
                 children: <Widget>[
 
@@ -107,7 +107,7 @@ class NotesWidget extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        item.title,
+                        item.getTitle(),
                         style: TextStyle(
                           backgroundColor: Colors.white,
                           fontSize: 16,

@@ -76,7 +76,16 @@ class Notes with ChangeNotifier {
 
   // Add item
   void add(Content item) {
-    _notes.add(item);
+
+    Content finded = _notes.firstWhere((e) => identical(e.id,item.id) == true);
+
+    /// If already in
+    if(finded != null){
+      _notes.add(item);
+    } else {
+      finded = item;
+    }
+
     notifyListeners();
   }
 

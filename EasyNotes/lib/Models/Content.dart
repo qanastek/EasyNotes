@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class Content {
 
+  String id;
   String title;
   bool favorite;
   bool secured;
@@ -17,6 +19,7 @@ abstract class Content {
 
   /// Constructor
   Content(title,favorite,secured,password,description,icon,color) {
+    this.id = Uuid().toString();
     this.title = title;
     this.favorite = favorite;
     this.secured = secured;
@@ -27,6 +30,10 @@ abstract class Content {
     this.creationDate = DateTime.now();
     this.lastModification = DateTime.now();
     this.archived = false;
+  }
+
+  String getTitle() {
+    return title;
   }
 
   /// Return the description according to the type

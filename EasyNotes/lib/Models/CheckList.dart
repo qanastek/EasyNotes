@@ -15,6 +15,11 @@ class CheckList extends Content {
   @override
   String getDescription() {
 
+    // Check if it's secured
+    if(secured == true) {
+      return "Secured todo list";
+    }
+
     // How many done ?
     int counterDone = this.checkboxes.where((cb) => cb.checked == true).toList().length;
 
@@ -23,6 +28,12 @@ class CheckList extends Content {
 
   @override
   IconData getIcon() {
+
+    // Check if it's secured
+    if(secured == true) {
+      return AddIcons.lock;
+    }
+
     return AddIcons.checklist;
   }
 }

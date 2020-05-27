@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:phonecall/Icons/add_icons_icons.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Note.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -37,6 +38,12 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
   void like() {
     setState(() {
       widget.item.favorite = !widget.item.favorite;
+    });
+  }
+  /// Secure the content
+  void secure() {
+    setState(() {
+      widget.item.secured = !widget.item.secured;
     });
   }
 
@@ -261,11 +268,11 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
           /// Secure
           IconButton(
-            icon: (widget.item.favorite ? Icon(Icons.lock_outline) : Icon(Icons.lock_open)),
+            icon: (widget.item.secured ? Icon(AddIcons.lock) : Icon(AddIcons.unlock)),
             color: MyColors.CUSTOM_RED,
             onPressed: () {
               /// TODO: Open password modal
-              this.like();
+              this.secure();
             },
           ),
 

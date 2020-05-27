@@ -170,85 +170,101 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
           ),
         ),
 
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
         /// NavigationBar
-        bottomNavigationBar: BottomNavigationBar(
-          items: <BottomNavigationBarItem>[
+        bottomNavigationBar: BottomAppBar(
+          shape: CircularNotchedRectangle(),
+          color: Colors.white,
+          notchMargin: -5.0,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
 
-            /// Bookmarks
-            BottomNavigationBarItem(
-              icon: ShaderMask(
-                blendMode: BlendMode.srcIn,
-                shaderCallback: (Rect bounds) {
-                  return ui.Gradient.linear(
-                    Offset(4.0, 24.0),
-                    Offset(24.0, 4.0),
-                    [
-                      MyColors.START_FADE,
-                      MyColors.END_FADE,
-                    ],
-                  );
+              /// Bookmarks
+              IconButton(
+                onPressed: () {
+                  print("Bookmarks");
                 },
-                child: Icon(Icons.collections_bookmark),
+                icon: ShaderMask(
+                  blendMode: BlendMode.srcIn,
+                  shaderCallback: (Rect bounds) {
+                    return ui.Gradient.linear(
+                      Offset(4.0, 24.0),
+                      Offset(24.0, 4.0),
+                      [Color(0xFFE58981), Color(0xFFF8D6B2)],
+                    );
+                  },
+                  child: Icon(Icons.collections_bookmark),
+                ),
               ),
-              title: Container(),
-            ),
 
-            /// Add modal
-            BottomNavigationBarItem(
-              icon: ShaderMask(
-                blendMode: BlendMode.srcIn,
-                shaderCallback: (Rect bounds) {
-                  return ui.Gradient.linear(
-                    Offset(4.0, 24.0),
-                    Offset(24.0, 4.0),
-                    [
-                      MyColors.START_FADE,
-                      MyColors.END_FADE,
-                    ],
-                  );
+              /// Garbage
+              IconButton(
+                onPressed: () {
+                  print("Garbage");
                 },
-                child: Icon(Icons.add_circle_outline),
+                icon: ShaderMask(
+                  blendMode: BlendMode.srcIn,
+                  shaderCallback: (Rect bounds) {
+                    return ui.Gradient.linear(
+                      Offset(4.0, 24.0),
+                      Offset(24.0, 4.0),
+                      [Color(0xFFE58981), Color(0xFFF8D6B2)],
+                    );
+                  },
+                  child: Icon(Icons.restore_from_trash),
+                ),
               ),
-              title: Container(),
-            ),
 
-            /// Garbage
-            BottomNavigationBarItem(
-              icon: ShaderMask(
-                blendMode: BlendMode.srcIn,
-                shaderCallback: (Rect bounds) {
-                  return ui.Gradient.linear(
-                    Offset(4.0, 24.0),
-                    Offset(24.0, 4.0),
-                    [
-                      MyColors.START_FADE,
-                      MyColors.END_FADE,
-                    ],
-                  );
-                },
-                child: Icon(Icons.restore_from_trash),
-              ),
-              title: Container(),
-            ),
-
-          ],
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
+            ],
+          ),
         ),
 
-        /// Floating menu
-        floatingActionButton: FloatingMenu(
-          addContent: (String name) {
-            setState(() {
-              _addContent(name);
-            });
-          },
-          addItem: (Content item) {
-            setState(() {
-              _addItem(item);
-            });
-          },
+        /// Floating menu centered
+        floatingActionButton: Container(
+          width: 70.0,
+          height: 70.0,
+          margin: const EdgeInsets.all(15),
+          child: ClipOval(
+            child: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topRight,
+                      end: Alignment.bottomLeft,
+                      colors: [Color(0xFFF8D6B2), Color(0xFFE58981)])
+              ),
+              child: IconButton(
+                  onPressed: () {
+                    print("open");
+                    showAddModal(context);
+                  },
+                  icon: Icon(
+                      Icons.add
+                  ),
+                  color: Colors.white,
+              ),
+            ),
+          ),
         ),
+
+        /// Floating menu right
+//        floatingActionButton: FloatingMenu(
+//          addContent: (String name) {
+//            setState(() {
+//              _addContent(name);
+//            });
+//          },
+//          addItem: (Content item) {
+//            setState(() {
+//              _addItem(item);
+//            });
+//          },
+//        ),
+
 
       ),
     );

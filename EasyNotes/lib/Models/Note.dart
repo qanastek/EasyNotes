@@ -17,6 +17,12 @@ class Note extends Content {
 
   @override
   String getDescription() {
+
+    // Check if it's secured
+    if(secured == true) {
+      return "Secured note";
+    }
+
     if(this.expiredDate != null) {
       return "${expiredDate.difference(DateTime.now()).inHours} hours left";
     } else {
@@ -26,6 +32,12 @@ class Note extends Content {
 
   @override
   IconData getIcon() {
+
+    // Check if it's secured
+    if(secured == true) {
+      return AddIcons.lock;
+    }
+
     return AddIcons.document;
   }
 }

@@ -13,11 +13,21 @@ class Folder extends Content {
 
   @override
   String getDescription() {
+
+    if(secured == true) {
+      return "Secured folder";
+    }
+
     return "${this.content.length} Elements";
   }
 
   @override
   IconData getIcon() {
+
+    // Check if it's secured
+    if(secured == true) {
+      return AddIcons.lock;
+    }
 
     if(content.length > 1) {
       return AddIcons.folder;
