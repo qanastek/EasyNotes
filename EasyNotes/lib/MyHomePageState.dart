@@ -181,6 +181,13 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
 
           /// Body
           body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                colors: [Color(0xFFFFECE0),Color(0xFFF6E4D8)],
+              ),
+            ),
             padding: const EdgeInsets.only(
               top: 20,
               bottom: 20,

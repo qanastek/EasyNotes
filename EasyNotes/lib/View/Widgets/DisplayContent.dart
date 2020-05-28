@@ -415,15 +415,15 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                   ),
                 ),
                 onDragStarted: () {
-
                   /// Show
                   toggleDropArea();
                 },
                 onDragEnd: (details) {
-
                   /// Hide
                   toggleDropArea();
                 },
+                maxSimultaneousDrags: 1,
+                affinity: Axis.horizontal,
               );
             }),
           ),

@@ -107,7 +107,7 @@ class Notes with ChangeNotifier {
   /// Fill up the datas
   void fillUp() {
     _notes = List<Content>.generate(
-        3, (i) => Note(
+        30, (i) => Note(
         "Recipe Lemonade $i",
         false,
         false,
