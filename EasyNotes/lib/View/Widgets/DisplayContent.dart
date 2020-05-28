@@ -10,12 +10,13 @@ import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/ShowNote.dart';
 import 'package:provider/provider.dart';
 import 'package:phonecall/View/Widgets/AddNote.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 typedef ContentDeleteCallback = void Function(Content item);
 typedef CheckListShowCallback = void Function(BuildContext context, Content item);
 typedef InsideCallback = void Function(Notes notes);
 
-class DisplayContent extends StatelessWidget {
+class DisplayContent extends StatefulWidget {
 
   final Notes notes;
   final ContentDeleteCallback removeContent;
@@ -23,145 +24,412 @@ class DisplayContent extends StatelessWidget {
   final ContentDeleteCallback addItem;
   final CheckListShowCallback showAddTodoListModal;
   final InsideCallback inside;
+  final ContentDeleteCallback delete;
 
-  DisplayContent({this.notes, this.removeContent, this.likeContent, this.addItem, this.showAddTodoListModal, this.inside});
+  DisplayContent({this.notes, this.removeContent, this.likeContent, this.addItem, this.showAddTodoListModal, this.inside, this.delete});
+
+  @override
+  DisplayContentState createState() => DisplayContentState();
+
+}
+
+class DisplayContentState extends State<DisplayContent> with SingleTickerProviderStateMixin {
+
+  bool _dropAreaStatus = false;
+
+  toggleDropArea() {
+    setState(() {
+      this._dropAreaStatus = !this._dropAreaStatus;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
 
+    final _dropKey = GlobalKey<FormState>();
+
 //    Notes notes = Provider.of<Notes>(context, listen: false);
 
-    return GridView.count(
-      // Row width
-      crossAxisCount: 2,
-      childAspectRatio: 1,
-      mainAxisSpacing: 4,
-      crossAxisSpacing: 4,
-      // Generate 100 widgets that display their index in the List.
-      children: List.generate(notes.length, (index) {
+    return Column(
+      children: <Widget>[
 
-        /// Current element
-        Content item = notes.get(index);
+        /// Drop area
+        Visibility(
+//          maintainSize: true,
+//          maintainAnimation: true,
+//          maintainState: true,
+          visible: _dropAreaStatus,
+          child: DragTarget<Content>(
+            key: _dropKey,
+            onWillAccept: (data) => data is Content,
+            onAccept: (data) {
 
-        return GestureDetector(
-          onTap: () {
+              print("Deleted!");
+              print(data);
 
-              /// Note
-              if(item is Note) {
-
-                /// Open the item view
-                Navigator.push(context,MaterialPageRoute(builder: (context) => ShowNote(
-                  addItem: addItem,
-                  removeItem: removeContent,
-                  item: item,
-                  likeItem: likeContent,
-                )));
-              }
-
-              /// TodoList
-              else if(item is CheckList) {
-
-                /// Open the item view
-                showAddTodoListModal(
-                  context,
-                  item
-                );
-              }
-
-              /// Folder
-              else if(item is Folder) {
-
-                /// Open the item view
-                inside(item.content);
-              }
-          },
-          child: GridTile(
-            child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-              elevation: 1.5,
-              child: Column(
-                children: <Widget>[
-
-                  /// Icon
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 10,
-                    ),
-                    decoration: new BoxDecoration(
-                        color: item.getColor(),
-                        borderRadius: new BorderRadius.all(Radius.circular(50))
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: Icon(
-                      item.getIcon(),
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                  ),
-
-                  /// Title
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      bottom: 5,
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        item.getTitle(),
-                        style: TextStyle(
-                          backgroundColor: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: MyColors.CUSTOM_RED,
-                          shadows: [
-                            Shadow(
-                              offset: Offset(1,1),
-                              blurRadius: 5,
-                              color: Color.fromARGB(50, 0, 0, 0),
-                            ),
-                          ],
+              /// Delete the item
+              widget.delete(data);
+            },
+            onLeave: (data) {
+              print("Do nothing!");
+            },
+            builder: (context, candidateData, rejectedData) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  top: 40,
+                  bottom: 0,
+                ),
+                child: DottedBorder(
+                  color: MyColors.CUSTOM_RED,
+                  dashPattern: [8, 4],
+                  strokeWidth: 2,
+                  borderType: BorderType.Circle,
+                  child: Container(
+                      height: 50,
+                      width: 50,
+                      alignment: Alignment.center,
+                      color: Colors.transparent,
+                      child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(500),
                         ),
-                      ),
-                    ),
-                  ),
-
-                  /// Description
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      left: 20,
-                      right: 10,
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Text(
-                        item.getDescription(),
-                        style: TextStyle(
-                          backgroundColor: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w300,
-                          color: MyColors.CUSTOM_RED,
-                          shadows: [
-                            Shadow(
-                              offset: Offset(1,1),
-                              blurRadius: 5,
-                              color: Color.fromARGB(50, 0, 0, 0),
-                            ),
-                          ],
+                        child: Center(
+                          child: Icon(
+                            Icons.delete,
+                            color: MyColors.CUSTOM_RED,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-
-                ],
-              ),
-
-            ),
+                      )),
+                ),
+              );
+            },
           ),
-        );
-      }),
+        ),
+
+        /// Grid view
+        Expanded(
+          child: GridView.count(
+            // Row width
+            crossAxisCount: 2,
+            childAspectRatio: 1,
+            mainAxisSpacing: 4,
+            crossAxisSpacing: 4,
+            padding: const EdgeInsets.only(
+              top: 30,
+            ),
+            // Generate 100 widgets that display their index in the List.
+            children: List.generate(widget.notes.length, (index) {
+
+              /// Current element
+              Content item = widget.notes.get(index);
+
+              return Draggable<Content>(
+                data: item,
+                child: GestureDetector(
+                  onTap: () {
+
+                    /// Note
+                    if(item is Note) {
+
+                      /// Open the item view
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => ShowNote(
+                        addItem: widget.addItem,
+                        removeItem: widget.removeContent,
+                        item: item,
+                        likeItem: widget.likeContent,
+                      )));
+                    }
+
+                    /// TodoList
+                    else if(item is CheckList) {
+
+                      /// Open the item view
+                      widget.showAddTodoListModal(
+                          context,
+                          item
+                      );
+                    }
+
+                    /// Folder
+                    else if(item is Folder) {
+
+                      /// Open the item view
+                      widget.inside(item.content);
+                    }
+                  },
+                  child: GridTile(
+                    child: Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                      elevation: 1.5,
+                      child: Column(
+                        children: <Widget>[
+
+                          /// Icon
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 20,
+                              bottom: 10,
+                            ),
+                            decoration: new BoxDecoration(
+                                color: item.getColor(),
+                                borderRadius: new BorderRadius.all(Radius.circular(50))
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            child: Icon(
+                              item.getIcon(),
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ),
+
+                          /// Title
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              right: 20,
+                              bottom: 5,
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                item.getTitle(),
+                                style: TextStyle(
+                                  backgroundColor: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: MyColors.CUSTOM_RED,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1,1),
+                                      blurRadius: 5,
+                                      color: Color.fromARGB(50, 0, 0, 0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          /// Description
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              left: 20,
+                              right: 10,
+                            ),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                item.getDescription(),
+                                style: TextStyle(
+                                  backgroundColor: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w300,
+                                  color: MyColors.CUSTOM_RED,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1,1),
+                                      blurRadius: 5,
+                                      color: Color.fromARGB(50, 0, 0, 0),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        ],
+                      ),
+
+                    ),
+                  ),
+                ),
+                feedback: GridTile(
+                  child: Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 1.5,
+                    child: Column(
+                      children: <Widget>[
+
+                        /// Icon
+                        Container(
+                          margin: const EdgeInsets.only(
+                            top: 20,
+                            bottom: 10,
+                          ),
+                          decoration: new BoxDecoration(
+                              color: item.getColor(),
+                              borderRadius: new BorderRadius.all(Radius.circular(50))
+                          ),
+                          padding: const EdgeInsets.all(20),
+                          child: Icon(
+                            item.getIcon(),
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+
+                        /// Title
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                            bottom: 5,
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              item.getTitle(),
+                              style: TextStyle(
+                                backgroundColor: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.CUSTOM_RED,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1,1),
+                                    blurRadius: 5,
+                                    color: Color.fromARGB(50, 0, 0, 0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /// Description
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 10,
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              item.getDescription(),
+                              style: TextStyle(
+                                backgroundColor: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w300,
+                                color: MyColors.CUSTOM_RED,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1,1),
+                                    blurRadius: 5,
+                                    color: Color.fromARGB(50, 0, 0, 0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+                  ),
+                ),
+                childWhenDragging: GridTile(
+                  child: Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                    elevation: 0,
+                    child: Column(
+                      children: <Widget>[
+
+                        /// Icon
+                        Container(
+                          margin: const EdgeInsets.only(
+                            top: 20,
+                            bottom: 10,
+                          ),
+                          decoration: new BoxDecoration(
+                              color: item.getColor(),
+                              borderRadius: new BorderRadius.all(Radius.circular(50))
+                          ),
+                          padding: const EdgeInsets.all(20),
+                          child: Icon(
+                            item.getIcon(),
+                            color: Colors.white,
+                            size: 25,
+                          ),
+                        ),
+
+                        /// Title
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 20,
+                            bottom: 5,
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              item.getTitle(),
+                              style: TextStyle(
+                                backgroundColor: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.CUSTOM_RED,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1,1),
+                                    blurRadius: 5,
+                                    color: Color.fromARGB(50, 0, 0, 0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        /// Description
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            right: 10,
+                          ),
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              item.getDescription(),
+                              style: TextStyle(
+                                backgroundColor: Colors.white,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w300,
+                                color: MyColors.CUSTOM_RED,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1,1),
+                                    blurRadius: 5,
+                                    color: Color.fromARGB(50, 0, 0, 0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+
+                  ),
+                ),
+                onDragStarted: () {
+
+                  /// Show
+                  toggleDropArea();
+                },
+                onDragEnd: (details) {
+
+                  /// Hide
+                  toggleDropArea();
+                },
+              );
+            }),
+          ),
+        ),
+
+      ],
     );
 
 

@@ -61,6 +61,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
     });
   }
 
+  void _delete(Content item) {
+    setState(() {
+      notes.remove(item);
+    });
+  }
+
   void _removeContent(Content item) {
     setState(() {
       notes.remove(item);
@@ -142,6 +148,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
     });
   }
 
+  /// Override the default handling of the back button
   Future<bool> _onBackPressed() {
 
     /// If have ancestor
@@ -205,6 +212,11 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
               inside: (Notes notes) {
                 setState(() {
                   _inside(notes);
+                });
+              },
+              delete: (Content item) {
+                setState(() {
+                  _delete(item);
                 });
               },
             ),

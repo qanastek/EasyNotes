@@ -27,7 +27,13 @@ abstract class Content {
     this.password = password;
     this.description = description;
     this.icon = icon;
-    this.color = color;
+
+    if(color != null) {
+      this.color = color;
+    } else {
+      this.color = MyColors.randomColor();
+    }
+
     this.creationDate = DateTime.now();
     this.lastModification = DateTime.now();
     this.archived = false;
@@ -42,12 +48,6 @@ abstract class Content {
 
   /// Get color
   Color getColor() {
-
-    if(this.color == null) {
-
-      return MyColors.randomColor();
-    }
-
     return this.color;
   }
 

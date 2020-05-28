@@ -52,6 +52,9 @@ dependencies:
   # i18n
   intl: ^0.16.1
 
+  # Dashed border container
+  dotted_border: ^1.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
