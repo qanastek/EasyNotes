@@ -178,7 +178,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             padding: const EdgeInsets.all(20),
                             child: Icon(
                               item.getIcon(),
-                              color: Colors.white,
+                              color: item.getIconColor(),
                               size: 25,
                             ),
                           ),

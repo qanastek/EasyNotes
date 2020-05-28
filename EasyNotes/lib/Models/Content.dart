@@ -51,6 +51,11 @@ abstract class Content {
     return this.color;
   }
 
+  /// Get icon color
+  Color getIconColor() {
+    return this.color.computeLuminance() > 0.7 ? Colors.black54 : Colors.white;
+  }
+
   /// Get icon
   IconData getIcon();
 }
