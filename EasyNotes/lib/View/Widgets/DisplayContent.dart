@@ -119,7 +119,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
               top: 30,
             ),
             // Generate 100 widgets that display their index in the List.
-            children: List.generate(widget.notes.length, (index) {
+            children: List.generate(widget.notes.contentLength, (index) {
 
               /// Current element
               Content item = widget.notes.get(index);
@@ -425,6 +425,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                 maxSimultaneousDrags: 1,
                 affinity: Axis.horizontal,
               );
+
             }),
           ),
         ),

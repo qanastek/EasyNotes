@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Folder.dart';
 import 'package:phonecall/Models/Note.dart';
+import 'package:phonecall/Models/Setting/AppSettings.dart';
 
 class Notes with ChangeNotifier {
 
@@ -16,6 +17,51 @@ class Notes with ChangeNotifier {
 
   /// Fill up the list for test
   List<Content> _notes = List<Content>();
+
+  /// Current view mode
+  String mode = AppSettings.DEFAULT;
+
+  /// Return the content
+  get content {
+
+    if(mode == AppSettings.BOOKMARKS) {
+      return this.bookmarks;
+    }
+    else if(mode == AppSettings.ARCHIVED) {
+      return this.archives;
+    }
+    else {
+      return this.notes;
+    }
+  }
+
+  /// Return the length
+  get contentLength {
+
+    if(mode == AppSettings.BOOKMARKS) {
+      return this.bookmarksLength;
+    }
+    else if(mode == AppSettings.ARCHIVED) {
+      return this.archivesLength;
+    }
+    else {
+      return this.length;
+    }
+  }
+
+  /// Get the content
+  Content get(int index) {
+
+    if(mode == AppSettings.BOOKMARKS) {
+      return this.bookmarks[index];
+    }
+    else if(mode == AppSettings.ARCHIVED) {
+      return this.archives[index];
+    }
+    else {
+      return this.notes[index];
+    }
+  }
 
   // Getter non archived notes
   get notes {
@@ -45,11 +91,6 @@ class Notes with ChangeNotifier {
   // Getter
   get archivesLength {
     return archives.length;
-  }
-
-  // Add item
-  Content get(int index) {
-    return notes[index];
   }
 
   // Add item

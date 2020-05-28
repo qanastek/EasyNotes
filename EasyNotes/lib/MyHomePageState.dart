@@ -10,6 +10,7 @@ import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Folder.dart';
 import 'package:phonecall/Models/Note.dart';
+import 'package:phonecall/Models/Setting/AppSettings.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/FloatingMenu.dart';
@@ -148,6 +149,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
     });
   }
 
+  void _changeMode(String newMode) {
+    setState(() {
+      notes.mode = newMode;
+    });
+  }
+
   /// Override the default handling of the back button
   Future<bool> _onBackPressed() {
 
@@ -190,7 +197,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
             ),
             padding: const EdgeInsets.only(
               top: 20,
-              bottom: 20,
+              bottom: 0,
               left: 20,
               right: 20,
             ),
@@ -245,6 +252,11 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                 IconButton(
                   onPressed: () {
                     print("Bookmarks");
+                    if(notes.mode == AppSettings.BOOKMARKS) {
+                      this._changeMode(AppSettings.DEFAULT);
+                    } else {
+                      this._changeMode(AppSettings.BOOKMARKS);
+                    }
                   },
                   icon: ShaderMask(
                     blendMode: BlendMode.srcIn,
@@ -255,14 +267,19 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                         [Color(0xFFE58981), Color(0xFFF8D6B2)],
                       );
                     },
-                    child: Icon(Icons.collections_bookmark),
+                    child: notes.mode == AppSettings.BOOKMARKS ? Icon(Icons.format_list_bulleted) : Icon(Icons.collections_bookmark),
                   ),
                 ),
 
-                /// Garbage
+                /// Archived
                 IconButton(
                   onPressed: () {
-                    print("Garbage");
+                    print("Archived");
+                    if(notes.mode == AppSettings.ARCHIVED) {
+                      this._changeMode(AppSettings.DEFAULT);
+                    } else {
+                      this._changeMode(AppSettings.ARCHIVED);
+                    }
                   },
                   icon: ShaderMask(
                     blendMode: BlendMode.srcIn,
@@ -273,7 +290,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                         [Color(0xFFE58981), Color(0xFFF8D6B2)],
                       );
                     },
-                    child: Icon(Icons.restore_from_trash),
+                    child: notes.mode == AppSettings.ARCHIVED ? Icon(Icons.format_list_bulleted) : Icon(Icons.restore_from_trash),
                   ),
                 ),
 
