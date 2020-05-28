@@ -68,6 +68,12 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
     });
   }
 
+  void _restore(Content item) {
+    setState(() {
+      notes.restore(item);
+    });
+  }
+
   void _removeContent(Content item) {
     setState(() {
       notes.remove(item);
@@ -231,6 +237,11 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
               delete: (Content item) {
                 setState(() {
                   _delete(item);
+                });
+              },
+              restore: (Content item) {
+                setState(() {
+                  _restore(item);
                 });
               },
             ),

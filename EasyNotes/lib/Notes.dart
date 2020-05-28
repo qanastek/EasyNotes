@@ -70,7 +70,7 @@ class Notes with ChangeNotifier {
 
   // Getter non archived notes
   get bookmarks {
-    return _notes.where((e) => e.favorite == true).toList();
+    return _notes.where((e) => (e.favorite == true) && (e.archived == false)).toList();
   }
 
   // Getter archived notes
@@ -139,9 +139,13 @@ class Notes with ChangeNotifier {
 
   // Remove item
   void remove(Content item) {
-//    _notes.remove(item);
     item.archived = true;
-    print(archivesLength);
+    notifyListeners();
+  }
+
+  // Restore item
+  void restore(Content item) {
+    item.archived = false;
     notifyListeners();
   }
 

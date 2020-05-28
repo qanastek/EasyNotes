@@ -5,6 +5,7 @@ import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Folder.dart';
 import 'package:phonecall/Models/Note.dart';
+import 'package:phonecall/Models/Setting/AppSettings.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/ShowNote.dart';
@@ -25,8 +26,9 @@ class DisplayContent extends StatefulWidget {
   final CheckListShowCallback showAddTodoListModal;
   final InsideCallback inside;
   final ContentDeleteCallback delete;
+  final ContentDeleteCallback restore;
 
-  DisplayContent({this.notes, this.removeContent, this.likeContent, this.addItem, this.showAddTodoListModal, this.inside, this.delete});
+  DisplayContent({this.notes, this.removeContent, this.likeContent, this.addItem, this.showAddTodoListModal, this.inside, this.delete, this.restore});
 
   @override
   DisplayContentState createState() => DisplayContentState();
@@ -64,11 +66,22 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
             onWillAccept: (data) => data is Content,
             onAccept: (data) {
 
-              print("Deleted!");
-              print(data);
+              if(widget.notes.mode == AppSettings.ARCHIVED) {
 
-              /// Delete the item
-              widget.delete(data);
+                print("Restore!");
+                print(data);
+
+                /// Delete the item
+                widget.restore(data);
+
+              } else {
+
+                print("Deleted!");
+                print(data);
+
+                /// Delete the item
+                widget.delete(data);
+              }
             },
             onLeave: (data) {
               print("Do nothing!");
@@ -96,7 +109,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                         ),
                         child: Center(
                           child: Icon(
-                            Icons.delete,
+                            widget.notes.mode == AppSettings.ARCHIVED ? Icons.restore_from_trash : Icons.delete,
                             color: MyColors.CUSTOM_RED,
                           ),
                         ),
@@ -280,6 +293,8 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               item.getTitle(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: TextStyle(
                                 backgroundColor: Colors.white,
                                 fontSize: 16,
@@ -307,6 +322,8 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               item.getDescription(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: TextStyle(
                                 backgroundColor: Colors.white,
                                 fontSize: 11,
@@ -331,6 +348,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                 ),
                 childWhenDragging: GridTile(
                   child: Card(
+                    color: Colors.white70,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
                     elevation: 0,
                     child: Column(
@@ -343,7 +361,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             bottom: 10,
                           ),
                           decoration: new BoxDecoration(
-                              color: item.getColor(),
+                              color: item.getColor().withOpacity(0.5),
                               borderRadius: new BorderRadius.all(Radius.circular(50))
                           ),
                           padding: const EdgeInsets.all(20),
@@ -365,18 +383,13 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               item.getTitle(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: TextStyle(
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.white70,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: MyColors.CUSTOM_RED,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1,1),
-                                    blurRadius: 5,
-                                    color: Color.fromARGB(50, 0, 0, 0),
-                                  ),
-                                ],
                               ),
                             ),
                           ),
@@ -392,8 +405,10 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               item.getDescription(),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: TextStyle(
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.white70,
                                 fontSize: 11,
                                 fontWeight: FontWeight.w300,
                                 color: MyColors.CUSTOM_RED,
