@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:phonecall/Icons/add_icons_icons.dart';
 import 'package:phonecall/Models/CheckBox.dart';
 import 'package:phonecall/Models/Content.dart';
-import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:share/share.dart';
 
 class CheckList extends Content {

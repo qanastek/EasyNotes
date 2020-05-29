@@ -6,13 +6,7 @@ import 'package:phonecall/Models/Setting/MyColors.dart';
 
 class Note extends Content {
 
-  DateTime oldExpiredDate;
-  DateTime expiredDate;
-
-  Note(title,favorite,secured,password,description,color, this.expiredDate): super(title, favorite, secured, password, description, Icons.note,color) {
-    this.creationDate = DateTime.now();
-    this.lastModification = DateTime.now();
-  }
+  Note(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description, Icons.note,color);
 
   @override
   String getDescription() {

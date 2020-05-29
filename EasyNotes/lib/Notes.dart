@@ -269,7 +269,6 @@ class Notes with ChangeNotifier {
             "Parlent de ta grande âme avec leur grande voix !\n\n\n"
             "Victor HUGO (1802 - 1885)",
             Color(0xFFFDEABF),
-            null,
         )
     );
 

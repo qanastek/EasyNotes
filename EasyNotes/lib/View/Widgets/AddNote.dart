@@ -90,12 +90,13 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                   onDateTimeChanged: (DateTime newDate) {
                     setState(() {
                       widget.item.expiredDate = newDate;
+                      print(widget.item.expiredDate);
                     });
                   },
                   initialDateTime: DateTime.now().add(Duration(minutes: 1)),
                   use24hFormat: true,
                   minimumDate: DateTime.now(),
-                  maximumDate: DateTime.now().add(Duration(days: 365*30)),
+                  maximumDate: DateTime.now().add(Duration(days: 30*365)),
                   minimumYear: DateTime.now().year,
                   maximumYear: DateTime.now().year+20,
                   minuteInterval: 1,
@@ -131,6 +132,11 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
     // Change edition date
     widget.item.lastModification = DateTime.now();
+
+    // Create a notification
+    if(widget.item.expiredDate != null) {
+      widget.item.showNotification();
+    }
 
     // Go back
     Navigator.pop(context);

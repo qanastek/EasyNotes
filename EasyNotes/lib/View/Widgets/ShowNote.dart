@@ -56,65 +56,6 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
     });
   }
 
-  /// Pick the date/time of the remainder
-  void remainder() {
-
-    print(widget.item.expiredDate);
-
-    setState(() {
-
-      /// If empty get the date
-      if(widget.item.expiredDate == null) {
-
-        /// TODO: Open remainder modal and collect the value.
-
-        /// Open the modal
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext builder) {
-
-            return Container(
-              height: MediaQuery.of(context).copyWith().size.height / 3,
-              child: CupertinoTheme(
-                data: CupertinoThemeData(
-                  textTheme: CupertinoTextThemeData(
-                    dateTimePickerTextStyle: TextStyle(
-                      color: MyColors.CUSTOM_RED,
-                    ),
-                  ),
-                  primaryColor: MyColors.CUSTOM_RED,
-                  primaryContrastingColor: MyColors.CUSTOM_RED,
-                  scaffoldBackgroundColor: MyColors.CUSTOM_RED,
-                  barBackgroundColor: MyColors.CUSTOM_RED,
-                  brightness: Brightness.light,
-                ),
-                child: CupertinoDatePicker(
-                  onDateTimeChanged: (DateTime newDate) {
-                    setState(() {
-                      widget.item.expiredDate = newDate;
-                    });
-                  },
-                  initialDateTime: DateTime.now().add(Duration(minutes: 1)),
-                  use24hFormat: true,
-                  minimumDate: DateTime.now(),
-                  maximumDate: DateTime.now().add(Duration(days: 365*30)),
-                  minimumYear: DateTime.now().year,
-                  maximumYear: DateTime.now().year+20,
-                  minuteInterval: 1,
-                  mode: CupertinoDatePickerMode.dateAndTime,
-                  backgroundColor: CupertinoColors.white,
-                ),
-              ),
-            );
-          }
-        );
-
-      } else {
-        widget.item.expiredDate = null;
-      }
-    });
-  }
-
   void changeColor(Color color) {
     setState(() {
       widget.item.color = color;
@@ -173,15 +114,6 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
 
         /// Others buttons
         actions: <Widget>[
-
-          /// Clock
-          IconButton(
-            icon: (widget.item.expiredDate != null ? Icon(Icons.alarm) : Icon(Icons.add_alarm)),
-            color: MyColors.CUSTOM_RED,
-            onPressed: () {
-              this.remainder();
-            },
-          ),
 
           /// Bookmark
           IconButton(

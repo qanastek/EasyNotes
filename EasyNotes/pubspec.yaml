@@ -68,6 +68,13 @@ dependencies:
   # Share content
   share: ^0.6.2+3
 
+  # flutter_local_notifications dependencies
+  http: ^0.12.1
+  rxdart: ^0.24.1
+
+  # Remainder notification
+  flutter_local_notifications: ^1.4.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

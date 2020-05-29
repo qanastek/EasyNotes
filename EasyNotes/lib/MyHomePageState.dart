@@ -568,7 +568,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     onTap: () => {
                       Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
                         addItem: _addItem,
-                        item: Note("",false,false,null,"",Colors.greenAccent,null),
+                        item: Note("",false,false,null,"",Colors.greenAccent),
                       ))),
                     },
                   ),
