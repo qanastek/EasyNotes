@@ -4,6 +4,7 @@ import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:share/share.dart';
 
 abstract class Content {
 
@@ -58,4 +59,14 @@ abstract class Content {
 
   /// Get icon
   IconData getIcon();
+
+  /// Share the Content
+  void share(BuildContext context) {
+    final RenderBox box = context.findRenderObject();
+
+    Share.share("${this.title} \n ${this.description}",
+      subject: this.description,
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+    );
+  }
 }

@@ -65,6 +65,9 @@ dependencies:
   # Shared preferences
   shared_preferences: ^0.5.7+3
 
+  # Share content
+  share: ^0.6.2+3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

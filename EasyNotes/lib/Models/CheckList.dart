@@ -3,6 +3,7 @@ import 'package:phonecall/Icons/add_icons_icons.dart';
 import 'package:phonecall/Models/CheckBox.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
+import 'package:share/share.dart';
 
 class CheckList extends Content {
 
@@ -35,5 +36,25 @@ class CheckList extends Content {
     }
 
     return AddIcons.checklist;
+  }
+
+  /// Share the Content
+  @override
+  void share(BuildContext context) {
+
+    final RenderBox box = context.findRenderObject();
+
+    String mailContent = "${this.title} \n\n";
+
+    this.checkboxes.forEach((cb) {
+      mailContent += cb.checked ? "✔️" : "❌";
+      mailContent += "\t ${cb.title} \n\n";
+    });
+
+    Share.share(
+      mailContent,
+      subject: this.title,
+      sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
+    );
   }
 }

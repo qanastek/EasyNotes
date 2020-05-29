@@ -67,16 +67,24 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
   /// Save
   void save() {
 
-    widget.item.title = titleText.text;
+    CheckList todoList = widget.item;
 
-    widget.item.description = descriptionText.text;
+    // Check if valid
+    if (_formKeyTodoList.currentState.validate()) {
 
-    // Add the item
-    widget.addItem(widget.item);
+      /// Add item
+      setState(() {
 
-    // Go back
-    Navigator.pop(context);
-    Navigator.pop(context);
+        /// Set title
+        todoList.title = titleTextTodoList.text;
+
+        /// Insertion
+        widget.addItem(todoList);
+      });
+
+      /// Go back
+      Navigator.pop(context);
+    }
   }
 
   @override
@@ -189,6 +197,15 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
             },
           ),
 
+          /// Share
+          IconButton(
+            icon: Icon(AddIcons.plane, color: MyColors.CUSTOM_RED,),
+            color: MyColors.CUSTOM_RED,
+            onPressed: () {
+              widget.item.share(context);
+            },
+          ),
+
           /// Secure
           IconButton(
             icon: (widget.item.secured ? Icon(AddIcons.lock) : Icon(AddIcons.unlock)),
@@ -250,6 +267,7 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
               top: 2,
               bottom: 2,
             ),
+
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -269,6 +287,9 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
             ),
             child: TextFormField(
               controller: titleTextTodoList,
+              style: TextStyle(
+                color: MyColors.CUSTOM_RED,
+              ),
               decoration: InputDecoration(
                 hintText: "Folder title...",
                 hintStyle: TextStyle(
@@ -387,6 +408,9 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
                             Expanded(
                               child: TextFormField(
                                 controller: currentElementTextTodoList,
+                                style: TextStyle(
+                                  color: MyColors.CUSTOM_RED,
+                                ),
                                 decoration: InputDecoration(
                                   hintText: "Add element...",
                                   hintStyle: TextStyle(
@@ -502,25 +526,8 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
                 child: RaisedButton(
                   onPressed: () {
 
-                    // Check if valid
-                    if (_formKeyTodoList.currentState.validate()) {
-
-                      /// Print title
-                      print(titleTextTodoList.text);
-
-                      /// Add item
-                      setState(() {
-
-                        /// Set title
-                        todoList.title = titleTextTodoList.text;
-
-                        /// Insertion
-                        widget.addItem(todoList);
-                      });
-
-                      /// Go back
-                      Navigator.pop(context);
-                    }
+                    /// Save
+                    save();
                   },
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
                   padding: EdgeInsets.all(0.0),

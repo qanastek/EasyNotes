@@ -158,65 +158,71 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
 //        drawer: SideMenu(),
 
           /// Body
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-                colors: [Color(0xFFFFECE0),Color(0xFFF6E4D8)],
+          body: GestureDetector(
+            onTap: () {
+              // call this method here to hide soft keyboard
+              FocusScope.of(context).requestFocus(new FocusNode());
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [Color(0xFFFFECE0),Color(0xFFF6E4D8)],
+                ),
               ),
-            ),
-            padding: const EdgeInsets.only(
-              top: 20,
-              bottom: 0,
-              left: 20,
-              right: 20,
-            ),
-            child: notes.contentLength <= 0 ? displayEmpty() : DisplayContent(
-              notes: notes,
-              addItem: (Content item) {
-                setState(() {
-                  _addItem(item);
-                });
-              },
-              removeContent: (Content item) {
-                setState(() {
-                  _removeContent(item);
-                });
-              },
-              likeContent: (Content item) {
-                setState(() {
-                  _likeContent(item);
-                });
-              },
-              showAddTodoListModal: (context,Content item) {
-                setState(() {
-                  Navigator.push(context,MaterialPageRoute(builder: (context) => AddCheckList(
-                    addItem: _addItem,
-                    item: item,
-                  )));
-                });
-              },
-              inside: (Notes notes) {
-                setState(() {
-                  _inside(notes);
-                });
-              },
-              delete: (Content item) {
-                setState(() {
-                  _delete(item);
-                });
-              },
-              restore: (Content item) {
-                setState(() {
-                  _restore(item);
-                });
-              },
-              erase: (Content item) {
-                setState(() {
-                  _eraseContent(item);
-                });
-              },
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 0,
+                left: 20,
+                right: 20,
+              ),
+              child: notes.contentLength <= 0 ? displayEmpty() : DisplayContent(
+                notes: notes,
+                addItem: (Content item) {
+                  setState(() {
+                    _addItem(item);
+                  });
+                },
+                removeContent: (Content item) {
+                  setState(() {
+                    _removeContent(item);
+                  });
+                },
+                likeContent: (Content item) {
+                  setState(() {
+                    _likeContent(item);
+                  });
+                },
+                showAddTodoListModal: (context,Content item) {
+                  setState(() {
+                    Navigator.push(context,MaterialPageRoute(builder: (context) => AddCheckList(
+                      addItem: _addItem,
+                      item: item,
+                    )));
+                  });
+                },
+                inside: (Notes notes) {
+                  setState(() {
+                    _inside(notes);
+                  });
+                },
+                delete: (Content item) {
+                  setState(() {
+                    _delete(item);
+                  });
+                },
+                restore: (Content item) {
+                  setState(() {
+                    _restore(item);
+                  });
+                },
+                erase: (Content item) {
+                  setState(() {
+                    _eraseContent(item);
+                  });
+                },
+              ),
             ),
           ),
 
@@ -637,7 +643,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                             false,
                             null,
                             "",
-                            Colors.primaries[new Random().nextInt(Colors.primaries.length-1)]
+                            MyColors.randomColor()
                         ),
                       ))),
                     },
@@ -782,6 +788,9 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     ),
                     child: TextFormField(
                       controller: titleText,
+                      style: TextStyle(
+                        color: MyColors.CUSTOM_RED,
+                      ),
                       decoration: InputDecoration(
                         hintText: "Folder title...",
                         hintStyle: TextStyle(

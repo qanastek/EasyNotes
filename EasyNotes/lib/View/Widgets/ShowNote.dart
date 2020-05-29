@@ -197,7 +197,7 @@ class ShowNoteState extends State<ShowNote> with SingleTickerProviderStateMixin 
             icon: Icon(AddIcons.plane, color: MyColors.CUSTOM_RED,),
             color: MyColors.CUSTOM_RED,
             onPressed: () {
-              /// TODO: Share here
+              widget.item.share(context);
             },
           ),
 
