@@ -6,13 +6,12 @@ import 'package:phonecall/Models/Setting/MyColors.dart';
 
 class Note extends Content {
 
+  DateTime oldExpiredDate;
   DateTime expiredDate;
-  DateTime creationDate;
-  DateTime editDate;
 
   Note(title,favorite,secured,password,description,color, this.expiredDate): super(title, favorite, secured, password, description, Icons.note,color) {
     this.creationDate = DateTime.now();
-    this.editDate = DateTime.now();
+    this.lastModification = DateTime.now();
   }
 
   @override
@@ -26,7 +25,7 @@ class Note extends Content {
     if(this.expiredDate != null) {
       return "${expiredDate.difference(DateTime.now()).inHours} hours left";
     } else {
-      return "Edited: ${DateFormat.yMMMd().format(this.editDate)}";
+      return "Edited: ${DateFormat.yMMMd().format(this.lastModification)}";
     }
   }
 

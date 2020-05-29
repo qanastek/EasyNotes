@@ -130,7 +130,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
     widget.addItem(widget.item);
 
     // Change edition date
-    widget.item.editDate = DateTime.now();
+    widget.item.lastModification = DateTime.now();
 
     // Go back
     Navigator.pop(context);
