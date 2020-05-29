@@ -143,6 +143,12 @@ class Notes with ChangeNotifier {
     notifyListeners();
   }
 
+  // Erase item
+  void erase(Content item) {
+    _notes.remove(item);
+    notifyListeners();
+  }
+
   // Restore item
   void restore(Content item) {
     item.archived = false;

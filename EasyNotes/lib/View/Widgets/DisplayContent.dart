@@ -26,9 +26,10 @@ class DisplayContent extends StatefulWidget {
   final CheckListShowCallback showAddTodoListModal;
   final InsideCallback inside;
   final ContentDeleteCallback delete;
+  final ContentDeleteCallback erase;
   final ContentDeleteCallback restore;
 
-  DisplayContent({this.notes, this.removeContent, this.likeContent, this.addItem, this.showAddTodoListModal, this.inside, this.delete, this.restore});
+  DisplayContent({this.notes, this.removeContent, this.likeContent, this.addItem, this.showAddTodoListModal, this.inside, this.delete, this.restore, this.erase});
 
   @override
   DisplayContentState createState() => DisplayContentState();
@@ -49,74 +50,141 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
   Widget build(BuildContext context) {
 
     final _dropKey = GlobalKey<FormState>();
+    final _dropKeyDelete = GlobalKey<FormState>();
 
 //    Notes notes = Provider.of<Notes>(context, listen: false);
 
     return Column(
       children: <Widget>[
 
-        /// Drop area
+        /// Drop area archived
         Visibility(
 //          maintainSize: true,
 //          maintainAnimation: true,
 //          maintainState: true,
           visible: _dropAreaStatus,
-          child: DragTarget<Content>(
-            key: _dropKey,
-            onWillAccept: (data) => data is Content,
-            onAccept: (data) {
+          child: Container(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: (widget.notes.mode == AppSettings.ARCHIVED) ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+              children: <Widget>[
 
-              if(widget.notes.mode == AppSettings.ARCHIVED) {
+                /// Delete
+                Visibility(
+                  visible: _dropAreaStatus && (widget.notes.mode == AppSettings.ARCHIVED),
+                  child:  DragTarget<Content>(
+                    key: _dropKeyDelete,
+                    onWillAccept: (data) => data is Content,
+                    onAccept: (data) {
 
-                print("Restore!");
-                print(data);
+                      print("Delete for ever !");
+                      print(data);
 
-                /// Delete the item
-                widget.restore(data);
+                      /// Delete the item for ever
+                      widget.erase(data);
 
-              } else {
-
-                print("Deleted!");
-                print(data);
-
-                /// Delete the item
-                widget.delete(data);
-              }
-            },
-            onLeave: (data) {
-              print("Do nothing!");
-            },
-            builder: (context, candidateData, rejectedData) {
-              return Padding(
-                padding: const EdgeInsets.only(
-                  top: 40,
-                  bottom: 0,
-                ),
-                child: DottedBorder(
-                  color: MyColors.CUSTOM_RED,
-                  dashPattern: [8, 4],
-                  strokeWidth: 2,
-                  borderType: BorderType.Circle,
-                  child: Container(
-                      height: 50,
-                      width: 50,
-                      alignment: Alignment.center,
-                      color: Colors.transparent,
-                      child: Card(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(500),
+                    },
+                    onLeave: (data) {
+                      print("Do nothing!");
+                    },
+                    builder: (context, candidateData, rejectedData) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: 40,
+                          bottom: 0,
                         ),
-                        child: Center(
-                          child: Icon(
-                            widget.notes.mode == AppSettings.ARCHIVED ? Icons.restore_from_trash : Icons.delete,
-                            color: MyColors.CUSTOM_RED,
-                          ),
+                        child: DottedBorder(
+                          color: MyColors.CUSTOM_RED,
+                          dashPattern: [8, 4],
+                          strokeWidth: 2,
+                          borderType: BorderType.Circle,
+                          child: Container(
+                              height: 50,
+                              width: 50,
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: Card(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(500),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: MyColors.CUSTOM_RED,
+                                  ),
+                                ),
+                              )),
                         ),
-                      )),
+                      );
+                    },
+                  ),
                 ),
-              );
-            },
+
+                /// Restore
+                Visibility(
+                  visible: _dropAreaStatus,
+                  child: DragTarget<Content>(
+                    key: _dropKey,
+                    onWillAccept: (data) => data is Content,
+                    onAccept: (data) {
+
+                      if(widget.notes.mode == AppSettings.ARCHIVED) {
+
+                        print("Restore!");
+                        print(data);
+
+                        /// Delete the item
+                        widget.restore(data);
+
+                      } else {
+
+                        print("Deleted!");
+                        print(data);
+
+                        /// Delete the item
+                        widget.delete(data);
+                      }
+                    },
+                    onLeave: (data) {
+                      print("Do nothing!");
+                    },
+                    builder: (context, candidateData, rejectedData) {
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                          top: 40,
+                          bottom: 0,
+                        ),
+                        child: DottedBorder(
+                          color: MyColors.CUSTOM_RED,
+                          dashPattern: [8, 4],
+                          strokeWidth: 2,
+                          borderType: BorderType.Circle,
+                          child: Container(
+                              height: 50,
+                              width: 50,
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: Card(
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(500),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    widget.notes.mode == AppSettings.ARCHIVED ? Icons.restore_from_trash : Icons.delete,
+                                    color: MyColors.CUSTOM_RED,
+                                  ),
+                                ),
+                              )),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+              ],
+            ),
           ),
         ),
 
