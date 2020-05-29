@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:phonecall/Icons/add_icons_icons.dart';
-import 'package:phonecall/Models/CheckBox.dart';
 import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Folder.dart';
@@ -14,13 +12,12 @@ import 'package:phonecall/Models/Setting/AppSettings.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/AddCheckList.dart';
-import 'package:phonecall/View/Widgets/FloatingMenu.dart';
 import 'package:phonecall/View/Widgets/DisplayContent.dart';
-import 'package:phonecall/View/Widgets/SideMenu.dart';
-import 'package:phonecall/main.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui' as ui;
 import 'package:phonecall/View/Widgets/AddNote.dart';
+import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Stateful root of the APP
 class MyHomePage extends StatefulWidget {
@@ -36,8 +33,12 @@ class MyHomePage extends StatefulWidget {
 /// Add a state to the root widget
 class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
 
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  int counter = 0;
+
   // Counter
-  int _counter = 0;
+  Future<int> _counter;
 
   // Current display mode
   String _mode = "normal";
@@ -49,6 +50,19 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
   MyHomePageState() {
     /// Fill up the data
     notes.fillUp();
+  }
+
+  Future<void> _incrementCounter() async {
+
+    final SharedPreferences prefs = await _prefs;
+
+    counter = (prefs.getInt('counter') ?? 0) + 1;
+
+    setState(() {
+      _counter = prefs.setInt("counter", counter).then((bool success) {
+        return counter;
+      });
+    });
   }
 
   void _likeContent(Content item) {
@@ -651,7 +665,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
         false,
         null,
         "No description",
-        Colors.primaries[Random().nextInt(Colors.primaries.length-1)]
+        MyColors.randomColor()
     );
 
     showModalBottomSheet(
@@ -776,12 +790,6 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                         ),
                         border: InputBorder.none,
                       ),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Folder title...';
-                        }
-                        return null;
-                      },
                     ),
                   ),
 
@@ -843,10 +851,13 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                             if (_formKey.currentState.validate()) {
 
                               /// Set title
-                              folder.title = titleText.text;
+                              folder.title = titleText.text.isEmpty ? "New folder $counter" : titleText.text;
 
                               /// Add item
                               _addItem(folder);
+
+                              /// Increase counter of folders
+                              _incrementCounter();
 
                               /// Go back
                               Navigator.pop(context);
