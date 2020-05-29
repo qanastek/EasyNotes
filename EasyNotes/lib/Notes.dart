@@ -23,6 +23,35 @@ class Notes with ChangeNotifier {
   /// Current view mode
   String mode = AppSettings.DEFAULT;
 
+
+  List<Content> getContentFiltered(String filter) {
+
+    List<Content> res;
+
+    if(mode == AppSettings.BOOKMARKS) {
+      res = this.bookmarks;
+    }
+    else if(mode == AppSettings.ARCHIVED) {
+      res = this.archives;
+    }
+    else {
+      res = this.notes;
+    }
+
+    res = res.where((element) => element.title.toLowerCase().contains(filter.toLowerCase())).toList();
+
+    return res.length <= 0 ? this.content : res.toList();
+  }
+
+  int contentLengthFiltered(String filter) {
+    return filter == null || filter == "" ? this.contentLength : this.getContentFiltered(filter).length;
+  }
+
+  /// Get the content
+  Content getFiltered(String filter, int index) {
+    return filter == null || filter == "" ? this.content[index] : this.getContentFiltered(filter)[index];
+  }
+
   /// Return the content
   get content {
 

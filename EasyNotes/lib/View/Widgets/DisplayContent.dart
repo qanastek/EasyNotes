@@ -40,10 +40,30 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
 
   bool _dropAreaStatus = false;
 
+  TextEditingController searchBarController = new TextEditingController();
+  String filter;
+
   toggleDropArea() {
     setState(() {
       this._dropAreaStatus = !this._dropAreaStatus;
     });
+  }
+
+  @override
+  void initState() {
+
+    /// When typing in the searchBar
+    searchBarController.addListener(() {
+      setState(() {
+        filter = searchBarController.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    searchBarController.dispose();
+    super.dispose();
   }
 
   @override
@@ -174,6 +194,77 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
           ),
         ),
 
+        /// SearchBar
+        Container(
+          margin: EdgeInsets.only(
+            left: 0,
+            right: 0,
+            top: 40,
+            bottom: 0,
+          ),
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 0,
+            bottom: 0,
+          ),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10)
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.10),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Row(
+            children: <Widget>[
+
+              /// Current element field
+              Expanded(
+                child: TextFormField(
+                  controller: searchBarController,
+                  style: TextStyle(
+                    color: MyColors.CUSTOM_RED,
+                  ),
+                  cursorColor: MyColors.CUSTOM_RED.withOpacity(0.75),
+                  decoration: InputDecoration(
+                    hintText: "Search for a note...",
+                    hintStyle: TextStyle(
+                      fontSize: 23,
+                      color: MyColors.CUSTOM_RED.withOpacity(0.50),
+                    ),
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+
+              /// Add
+              IconButton(
+                alignment: Alignment.center,
+                onPressed: () {
+
+                },
+                icon: Icon(
+                  Icons.search,
+                  size: 30,
+                  color: MyColors.CUSTOM_RED,
+                ),
+                padding: EdgeInsets.all(15),
+              ),
+
+            ],
+          ),
+        ),
+
         /// Grid view
         Expanded(
           child: GridView.count(
@@ -183,13 +274,13 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
             padding: const EdgeInsets.only(
-              top: 30,
+              top: 20,
             ),
             // Generate 100 widgets that display their index in the List.
-            children: List.generate(widget.notes.contentLength, (index) {
+            children: List.generate(widget.notes.contentLengthFiltered(filter), (index) {
 
               /// Current element
-              Content item = widget.notes.get(index);
+              Content item = widget.notes.getFiltered(filter,index);
 
               /// Return the card for the Content
               return Draggable<Content>(

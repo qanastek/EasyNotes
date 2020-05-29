@@ -786,7 +786,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                         hintText: "Folder title...",
                         hintStyle: TextStyle(
                           fontSize: 23,
-                          color: Colors.pinkAccent[100],
+                          color: MyColors.CUSTOM_RED.withOpacity(0.50),
                         ),
                         border: InputBorder.none,
                       ),

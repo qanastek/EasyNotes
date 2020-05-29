@@ -335,7 +335,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                   hintText: "Title...",
                   hintStyle: TextStyle(
                     fontSize: 23,
-                    color: Colors.pinkAccent[100],
+                    color: MyColors.CUSTOM_RED.withOpacity(0.50),
                   ),
                   border: InputBorder.none,
                 ),
@@ -387,7 +387,7 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                     hintText: "Write yours ideas here...",
                     hintStyle: TextStyle(
                       fontSize: 23,
-                      color: Colors.pinkAccent[100],
+                      color: MyColors.CUSTOM_RED.withOpacity(0.50),
                     ),
                     border: InputBorder.none,
                   ),
