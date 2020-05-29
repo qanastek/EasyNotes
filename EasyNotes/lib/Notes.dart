@@ -65,18 +65,25 @@ class Notes with ChangeNotifier {
     }
   }
 
+  void sortByLastEdit() {
+    _notes.sort((b, a) => a.lastModification.compareTo(b.lastModification));
+  }
+
   // Getter non archived notes
   get notes {
+    sortByLastEdit();
     return _notes.where((e) => e.archived == false).toList();
   }
 
   // Getter non archived notes
   get bookmarks {
+    sortByLastEdit();
     return _notes.where((e) => (e.favorite == true) && (e.archived == false)).toList();
   }
 
   // Getter archived notes
   get archives {
+    sortByLastEdit();
     return _notes.where((e) => e.archived == true).toList();
   }
 
@@ -166,7 +173,7 @@ class Notes with ChangeNotifier {
         false,
         null,
         "",
-        null
+        Color(0xFFF1B9A3),
     );
 
     /// Folder
@@ -179,7 +186,7 @@ class Notes with ChangeNotifier {
         false,
         null,
         "",
-        null
+        Color(0xFFFFD18B),
     );
 
     /// To-do's
@@ -232,8 +239,8 @@ class Notes with ChangeNotifier {
             "La nature éternelle, et les champs, et les bois,\n" +
             "Parlent de ta grande âme avec leur grande voix !\n\n\n"
             "Victor HUGO (1802 - 1885)",
+            Color(0xFFFDEABF),
             null,
-            null
         )
     );
 
@@ -244,7 +251,7 @@ class Notes with ChangeNotifier {
         false,
         null,
         "",
-        null
+        Color(0xFFFFD18B),
     );
 
     /// To-do's

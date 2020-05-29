@@ -126,11 +126,6 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
       /// Go to them
       _inside(notes.parent);
     }
-    else {
-      print("No ancestor");
-      print(notes.length);
-      print(notes.parent);
-    }
   }
 
   /// The refresh method for the main page
@@ -163,7 +158,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
               left: 20,
               right: 20,
             ),
-            child: DisplayContent(
+            child: notes.contentLength <= 0 ? displayEmpty() : DisplayContent(
               notes: notes,
               addItem: (Content item) {
                 setState(() {
@@ -319,6 +314,62 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
 
         ),
       ),
+    );
+  }
+
+  Column displayEmpty() {
+
+    AssetImage blankImage;
+    String blankImageDescription;
+
+    /// Define the empty illustration
+    if (notes.mode == AppSettings.ARCHIVED) {
+
+      blankImage = AssetImage('images/empty.png');
+      blankImageDescription = "No archive found !";
+
+    } else if (notes.mode == AppSettings.BOOKMARKS) {
+
+      blankImage = AssetImage('images/empty2.png');
+      blankImageDescription = "No bookmarks found !";
+
+    } else {
+      blankImage = AssetImage('images/empty1.png');
+      blankImageDescription = "No content found !";
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(
+              image: blankImage,
+              repeat: ImageRepeat.noRepeat,
+              fit: BoxFit.fitWidth,
+              width: MediaQuery.of(context).size.width * 0.65,
+            ),
+          ],
+        ),
+
+        SizedBox(height: 25),
+
+        Flexible(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                blankImageDescription,
+                style: TextStyle(
+                  color: Color(0xFF3F3D56),
+                  fontSize: 20,
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 
