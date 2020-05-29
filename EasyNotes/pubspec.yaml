@@ -55,6 +55,13 @@ dependencies:
   # Dashed border container
   dotted_border: ^1.0.5
 
+  # NoSQL Database
+  hive: ^1.0.0
+  hive_flutter: ^0.2.1
+
+  # OS Path
+  path_provider: ^1.3.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

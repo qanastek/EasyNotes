@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:phonecall/Icons/add_icons_icons.dart';
+import 'package:phonecall/Models/CheckBox.dart';
+import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
 import 'package:phonecall/Models/Note.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -27,12 +29,12 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
   final _formKey = GlobalKey<FormState>();
 
-  // Current Note
-//  Note item = Note("",false,false,null,"",Colors.greenAccent);
-
   // Controllers
   final titleText = TextEditingController();
   final descriptionText = TextEditingController();
+
+  final titleTextTodoList = TextEditingController();
+  final currentElementTextTodoList = TextEditingController();
 
   /// Like/Dislike
   void like() {
@@ -63,8 +65,6 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
       /// If empty get the date
       if(widget.item.expiredDate == null) {
-
-        /// TODO: Open remainder modal and collect the value.
 
         /// Open the modal
         showModalBottomSheet(
@@ -122,14 +122,9 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
   /// Save
   void save() {
 
-    print(titleText.text);
     widget.item.title = titleText.text;
 
-    print(descriptionText.text);
     widget.item.description = descriptionText.text;
-
-    print("Item color: ");
-    print(widget.item.color.toString());
 
     // Add the item
     widget.addItem(widget.item);
@@ -140,11 +135,6 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
     // Go back
     Navigator.pop(context);
     Navigator.pop(context);
-
-    // Display a snackBar
-//                    Scaffold.of(context)
-//                    .showSnackBar(SnackBar(content: Text('Saved!')));
-
   }
 
   @override
@@ -294,22 +284,77 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: 10,
-            bottom: 15,
-            left: 20,
-            right: 20,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+      body: handleNote(),
+    );
+  }
 
-              /// Title
+  /// Note view
+  Form handleNote() {
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 10,
+          bottom: 15,
+          left: 20,
+          right: 20,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+
+            /// Title
+            Container(
+              padding: EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 2,
+                bottom: 2,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10)
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.15),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: TextFormField(
+                controller: titleText,
+                decoration: InputDecoration(
+                  hintText: "Title...",
+                  hintStyle: TextStyle(
+                    fontSize: 23,
+                    color: Colors.pinkAccent[100],
+                  ),
+                  border: InputBorder.none,
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Title...';
+                  }
+                  return null;
+                },
+              ),
+            ),
+
+            /// Content
+            Expanded(
+              child:
               Container(
+                margin: EdgeInsets.only(
+                  top: 25,
+                ),
                 padding: EdgeInsets.only(
                   left: 20,
                   right: 20,
@@ -334,9 +379,12 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                   ],
                 ),
                 child: TextFormField(
-                  controller: titleText,
+                  expands: true,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: descriptionText,
                   decoration: InputDecoration(
-                    hintText: "Title...",
+                    hintText: "Write yours ideas here...",
                     hintStyle: TextStyle(
                       fontSize: 23,
                       color: Colors.pinkAccent[100],
@@ -345,161 +393,108 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
                   ),
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Title...';
+                      return 'Write yours ideas here...';
                     }
                     return null;
                   },
                 ),
               ),
+            ),
 
-              /// Content
-              Expanded(
-                child:
+            /// Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+
+                /// Cancel
                 Container(
-                  margin: EdgeInsets.only(
-                    top: 25,
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
                   ),
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 2,
-                    bottom: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.15),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextFormField(
-                    expands: true,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    controller: descriptionText,
-                    decoration: InputDecoration(
-                      hintText: "Write yours ideas here...",
-                      hintStyle: TextStyle(
-                        fontSize: 23,
-                        color: Colors.pinkAccent[100],
-                      ),
-                      border: InputBorder.none,
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Write yours ideas here...';
-                      }
-                      return null;
+                  child: RaisedButton(
+                    onPressed: () {
+
+                      /// Cancel
+                      this.destroy();
                     },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    padding: EdgeInsets.all(0),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xfffb6c72), Color(0xffff988d)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(50.0)
+                      ),
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          'CANCEL',
+                          style: TextStyle(
+                            fontSize: 27,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
 
-              /// Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
+                /// Create
+                Container(
+                  margin: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
+                  ),
+                  child: RaisedButton(
+                    onPressed: () {
 
-                  /// Cancel
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 20,
-                    ),
-                    child: RaisedButton(
-                      onPressed: () {
-
-                        /// Cancel
-                        this.destroy();
-                      },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                      padding: EdgeInsets.all(0),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xfffb6c72), Color(0xffff988d)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(50.0)
-                        ),
-                        child: Container(
-                          constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'CANCEL',
-                            style: TextStyle(
-                              fontSize: 27,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                            ),
+                      // Check if valid
+                      if (_formKey.currentState.validate()) {
+                        this.save();
+                      }
+                    },
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                    padding: EdgeInsets.all(0.0),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Color(0xff69d9cc), Color(0xff50ff8c)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(50.0)
+                      ),
+                      child: Container(
+                        constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          'SAVE',
+                          style: TextStyle(
+                            fontSize: 27,
+                            fontFamily: "Roboto",
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ),
                   ),
+                ),
 
-                  /// Create
-                  Container(
-                    margin: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 20,
-                    ),
-                    child: RaisedButton(
-                      onPressed: () {
+              ],
+            ),
 
-                        // Check if valid
-                        if (_formKey.currentState.validate()) {
-                          this.save();
-                        }
-                      },
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                      padding: EdgeInsets.all(0.0),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Color(0xff69d9cc), Color(0xff50ff8c)],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(50.0)
-                        ),
-                        child: Container(
-                          constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            'SAVE',
-                            style: TextStyle(
-                              fontSize: 27,
-                              fontFamily: "Roboto",
-                              fontWeight: FontWeight.w300,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                ],
-              ),
-
-            ],
-          ),
+          ],
         ),
       ),
     );

@@ -52,16 +52,11 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
     final _dropKey = GlobalKey<FormState>();
     final _dropKeyDelete = GlobalKey<FormState>();
 
-//    Notes notes = Provider.of<Notes>(context, listen: false);
-
     return Column(
       children: <Widget>[
 
         /// Drop area archived
         Visibility(
-//          maintainSize: true,
-//          maintainAnimation: true,
-//          maintainState: true,
           visible: _dropAreaStatus,
           child: Container(
             alignment: Alignment.center,
@@ -76,9 +71,6 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                     key: _dropKeyDelete,
                     onWillAccept: (data) => data is Content,
                     onAccept: (data) {
-
-                      print("Delete for ever !");
-                      print(data);
 
                       /// Delete the item for ever
                       widget.erase(data);
@@ -131,16 +123,10 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
 
                       if(widget.notes.mode == AppSettings.ARCHIVED) {
 
-                        print("Restore!");
-                        print(data);
-
                         /// Delete the item
                         widget.restore(data);
 
                       } else {
-
-                        print("Deleted!");
-                        print(data);
 
                         /// Delete the item
                         widget.delete(data);
@@ -515,221 +501,6 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
 
       ],
     );
-
-
-    /// Build all the items elements
-//    return ListView.builder(
-//      itemCount: Provider.of<Notes>(context, listen: false).length, // How many elements
-//      itemBuilder: (BuildContext ctxt, int index) {
-//
-//        /// The current item and list of notes
-//        Notes notes = Provider.of<Notes>(context, listen: false);
-//        Content item = notes.get(index);
-//
-//        /// Slide left and right
-//        return Dismissible(
-//          key: ValueKey("item_$index"),
-//          direction: DismissDirection.horizontal,
-//          movementDuration: Duration(milliseconds: 300),
-//
-//          background: slideRightBackground(),
-//          secondaryBackground: slideLeftBackground(),
-//
-//          // ignore: missing_return
-//          confirmDismiss: (direction) async {
-//
-//            /// Delete
-//            if (direction == DismissDirection.endToStart) {
-//
-//              final bool res = await showDialog(
-//                  context: context,
-//                  builder: (BuildContext context) {
-//
-//                    return AlertDialog(
-//                      shape: RoundedRectangleBorder(
-//                        borderRadius: BorderRadius.vertical(
-//                          top: Radius.circular(25.0),
-//                          bottom: Radius.circular(25.0),
-//                        ),
-//                      ),
-//                      contentPadding: EdgeInsets.only(
-//                        left: 25,
-//                        right: 25,
-//                        top: 20,
-//                        bottom: 25,
-//                      ),
-//
-//                      /// Title
-//                      title: Text(
-//                        "Are you sure ?",
-//                        textAlign: TextAlign.center,
-//                        style: TextStyle(
-//                          color: MyColors.CUSTOM_RED,
-//                          fontWeight: FontWeight.w900,
-//                          fontSize: 30,
-//                        ),
-//                      ),
-//
-//                      /// Delete Illustration
-//                      content: Image.asset(
-//                        'images/empty.png',
-//                        fit: BoxFit.cover,
-//                        repeat: ImageRepeat.noRepeat,
-//                        scale: 1,
-//                      ),
-//
-//                      /// Buttons
-//                      actions: <Widget>[
-//
-//
-//                        /// Cancel
-////                        Container(
-////                          margin: const EdgeInsets.only(
-////                            top: 20,
-////                            bottom: 20,
-////                          ),
-////                          child: RaisedButton(
-////                            onPressed: () {
-////                              Navigator.of(context).pop();
-////                            },
-////                            shape: RoundedRectangleBorder(
-////                              borderRadius: BorderRadius.circular(80.0),
-////                            ),
-////                            padding: EdgeInsets.all(0),
-////                            child: Text(
-////                              'CANCEL',
-////                              style: TextStyle(
-////                                fontSize: 27,
-////                                fontFamily: "Roboto",
-////                                fontWeight: FontWeight.w300,
-////                                color: Colors.white,
-////                              ),
-////                            ),
-////                          ),
-////                        ),
-//
-//                        /// Create
-////                        Container(
-////                          margin: const EdgeInsets.only(
-////                            top: 20,
-////                            bottom: 20,
-////                          ),
-////                          child: RaisedButton(
-////                            onPressed: () {
-////
-////                              // Delete the item
-////                              removeContent(item);
-////
-////                              // Show a snackbar
-//////                            Scaffold
-//////                            .of(context)
-//////                            .showSnackBar(SnackBar(content: Text("${item.title} archived!")));
-////
-////                              Navigator.of(context).pop();
-////                            },
-////                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-////                            padding: EdgeInsets.all(0.0),
-////                            child: Ink(
-////                              decoration: BoxDecoration(
-////                                  gradient: LinearGradient(
-////                                    colors: [Color(0xff69d9cc), Color(0xff50ff8c)],
-////                                    begin: Alignment.topLeft,
-////                                    end: Alignment.bottomRight,
-////                                  ),
-////                                  borderRadius: BorderRadius.circular(50.0)
-////                              ),
-////                              child: Container(
-////                                alignment: Alignment.center,
-////                                padding: EdgeInsets.all(10),
-////                                child: Text(
-////                                  'CREATE',
-////                                  style: TextStyle(
-////                                    fontSize: 27,
-////                                    fontFamily: "Roboto",
-////                                    fontWeight: FontWeight.w300,
-////                                    color: Colors.white,
-////                                  ),
-////                                ),
-////                              ),
-////                            ),
-////                          ),
-////                        ),
-//
-//                      ],
-//                    );
-//                  });
-//              return res;
-//
-//            }
-//            /// TODO: Modify
-//            else {
-//
-//              // Edit Note
-//              if(item is Note) {
-//
-//                // Go edit activity
-//                Navigator.push(context,MaterialPageRoute(builder: (context) => AddNote(
-//                  addItem: addItem,
-//                  item: item,
-//                )));
-//              }
-//              // Edit Folder
-//              else if(item is Folder) {
-//
-//                print("Folder");
-//              }
-//              // Edit TodoList
-//              else if(item is CheckList) {
-//
-//                print("TodoList");
-//              }
-//
-//            }
-//          },
-//
-//          /// Item element
-//          child: ListTile(
-//
-//            /// Title
-//            title: Text(
-//                item.title,
-//                overflow: TextOverflow.ellipsis,
-//                style: TextStyle(
-//                    fontWeight: FontWeight.w500,
-//                    fontSize: 20
-//                )
-//            ),
-//
-//            /// SubTitle
-//            subtitle: Text(
-//              item.description,
-//              overflow: TextOverflow.ellipsis,
-//            ),
-//
-//            /// Leading icon
-//            leading: Icon(
-//                item.icon,
-//                color: item.color
-//            ),
-//
-//            /// Back icon
-//            trailing: IconButton(
-//                icon: (item.favorite ? Icon(Icons.bookmark, color: MyColors.CUSTOM_RED,) : Icon(Icons.bookmark_border, color: MyColors.CUSTOM_RED)),
-//                color: Colors.red[500],
-//                onPressed: () {
-//                  this.likeContent(item);
-//                },
-//            ),
-//
-//            /// OnClick
-//            onTap: () {
-//
-//            },
-//
-//          )
-//        );
-//      }
-//    );
   }
 }
 
