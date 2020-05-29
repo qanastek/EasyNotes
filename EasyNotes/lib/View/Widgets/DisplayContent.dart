@@ -191,6 +191,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
               /// Current element
               Content item = widget.notes.get(index);
 
+              /// Return the card for the Content
               return Draggable<Content>(
                 data: item,
                 child: GestureDetector(
@@ -261,6 +262,9 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                               alignment: Alignment.bottomLeft,
                               child: Text(
                                 item.getTitle(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                softWrap: false,
                                 style: TextStyle(
                                   backgroundColor: Colors.white,
                                   fontSize: 16,
@@ -343,24 +347,27 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                             right: 20,
                             bottom: 5,
                           ),
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              item.getTitle(),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: TextStyle(
-                                backgroundColor: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: MyColors.CUSTOM_RED,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1,1),
-                                    blurRadius: 5,
-                                    color: Color.fromARGB(50, 0, 0, 0),
-                                  ),
-                                ],
+                          child: Flexible(
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                item.getTitle(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                softWrap: false,
+                                style: TextStyle(
+                                  backgroundColor: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: MyColors.CUSTOM_RED,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(1,1),
+                                      blurRadius: 5,
+                                      color: Color.fromARGB(50, 0, 0, 0),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -439,6 +446,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                               item.getTitle(),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
+                              softWrap: false,
                               style: TextStyle(
                                 backgroundColor: Colors.white70,
                                 fontSize: 16,

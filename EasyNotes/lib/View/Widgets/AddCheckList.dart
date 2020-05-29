@@ -295,38 +295,40 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
 
-                    ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        physics: ScrollPhysics(),
-                        itemCount: todoList.checkboxes.length, // How many elements
-                        itemBuilder: (BuildContext ctxt, int index) {
-                          return Theme(
-                            data: ThemeData(
-                              primaryColor: MyColors.CUSTOM_RED,
-                              unselectedWidgetColor: MyColors.CUSTOM_RED,
-                              backgroundColor: Colors.white,
-                            ),
-                            child: CheckboxListTile(
-                              title: Text(
-                                todoList.checkboxes[index].title.substring(0,1).toUpperCase() + todoList.checkboxes[index].title.substring(1),
-                                style: TextStyle(
-                                  color: Color(0xFFFF8C8E),
-                                  fontSize: 20,
-                                ),
+                    Expanded(
+                      child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          physics: ScrollPhysics(),
+                          itemCount: todoList.checkboxes.length, // How many elements
+                          itemBuilder: (BuildContext ctxt, int index) {
+                            return Theme(
+                              data: ThemeData(
+                                primaryColor: MyColors.CUSTOM_RED,
+                                unselectedWidgetColor: MyColors.CUSTOM_RED,
+                                backgroundColor: Colors.white,
                               ),
-                              value: todoList.checkboxes[index].checked,
-                              controlAffinity: ListTileControlAffinity.leading,
-                              checkColor: Colors.white,
-                              activeColor: MyColors.CUSTOM_RED,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  todoList.checkboxes[index].checked = value;
-                                });
-                              },
-                            ),
-                          );
-                        }
+                              child: CheckboxListTile(
+                                title: Text(
+                                  todoList.checkboxes[index].title.substring(0,1).toUpperCase() + todoList.checkboxes[index].title.substring(1),
+                                  style: TextStyle(
+                                    color: Color(0xFFFF8C8E),
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                value: todoList.checkboxes[index].checked,
+                                controlAffinity: ListTileControlAffinity.leading,
+                                checkColor: Colors.white,
+                                activeColor: MyColors.CUSTOM_RED,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    todoList.checkboxes[index].checked = value;
+                                  });
+                                },
+                              ),
+                            );
+                          }
+                      ),
                     ),
 
                     /// Add element
