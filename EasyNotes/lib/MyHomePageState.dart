@@ -664,23 +664,98 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
         builder: (BuildContext bc){
           return Form(
             key: _formKey,
-            child: new Wrap(
-              spacing: 20,
-              children: <Widget>[
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Wrap(
+                spacing: 20,
+                children: <Widget>[
 
-                /// Separator
-                Center(
-                  child: Container(
-                    height: 8,
-                    width: 80,
+                  /// Separator
+                  Center(
+                    child: Container(
+                      height: 8,
+                      width: 80,
+                      margin: EdgeInsets.only(
+                        top: 20,
+                        bottom: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: MyColors.CUSTOM_RED,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.15),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  /// Colors palette
+                  Container(
+                    height: 55,
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                        bottom: 2,
+                      ),
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: BlockPicker(
+                        layoutBuilder: (context, colors, child) {
+
+                          Orientation orientation = MediaQuery.of(context).orientation;
+
+                          return Container(
+                            width: orientation == Orientation.portrait ? 340.0 : 300.0,
+                            height: orientation == Orientation.portrait ? 360.0 : 200.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: colors.map((Color color) => child(color)).toList(),
+                            ),
+                          );
+                        },
+                        availableColors: MyColors.COLORS_PALLETTE,
+                        pickerColor: folder.color,
+                        onColorChanged: (color) {
+                          setState(() {
+                            folder.color = color;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+
+                  /// Title
+                  Container(
                     margin: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
                       top: 20,
-                      bottom: 5,
+                      bottom: 10,
+                    ),
+                    padding: EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      top: 2,
+                      bottom: 2,
                     ),
                     decoration: BoxDecoration(
-                      color: MyColors.CUSTOM_RED,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          topRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10)
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -691,196 +766,126 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                         ),
                       ],
                     ),
-                  ),
-                ),
-
-                /// Colors palette
-                Container(
-                  height: 55,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                      left: 20,
-                      right: 20,
-                      top: 20,
-                      bottom: 2,
-                    ),
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    child: BlockPicker(
-                      layoutBuilder: (context, colors, child) {
-
-                        Orientation orientation = MediaQuery.of(context).orientation;
-
-                        return Container(
-                          width: orientation == Orientation.portrait ? 340.0 : 300.0,
-                          height: orientation == Orientation.portrait ? 360.0 : 200.0,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: colors.map((Color color) => child(color)).toList(),
-                          ),
-                        );
-                      },
-                      availableColors: MyColors.COLORS_PALLETTE,
-                      pickerColor: folder.color,
-                      onColorChanged: (color) {
-                        setState(() {
-                          folder.color = color;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-
-                /// Title
-                Container(
-                  margin: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 20,
-                    bottom: 10,
-                  ),
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 2,
-                    bottom: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10),
-                        topRight: Radius.circular(10),
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10)
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.15),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
+                    child: TextFormField(
+                      controller: titleText,
+                      decoration: InputDecoration(
+                        hintText: "Folder title...",
+                        hintStyle: TextStyle(
+                          fontSize: 23,
+                          color: Colors.pinkAccent[100],
+                        ),
+                        border: InputBorder.none,
                       ),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Folder title...';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  /// Buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+
+                      /// Cancel
+                      Container(
+                        margin: const EdgeInsets.only(
+                          top: 20,
+                          bottom: 20,
+                        ),
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                          padding: EdgeInsets.all(0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xfffb6c72), Color(0xffff988d)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(50.0)
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'CANCEL',
+                                style: TextStyle(
+                                  fontSize: 27,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      /// Create
+                      Container(
+                        margin: const EdgeInsets.only(
+                          top: 20,
+                          bottom: 20,
+                        ),
+                        child: RaisedButton(
+                          onPressed: () {
+
+                            // Check if valid
+                            if (_formKey.currentState.validate()) {
+
+                              /// Set title
+                              folder.title = titleText.text;
+
+                              /// Add item
+                              _addItem(folder);
+
+                              /// Go back
+                              Navigator.pop(context);
+                            }
+                          },
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                          padding: EdgeInsets.all(0.0),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xff69d9cc), Color(0xff50ff8c)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(50.0)
+                            ),
+                            child: Container(
+                              constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                'SAVE',
+                                style: TextStyle(
+                                  fontSize: 27,
+                                  fontFamily: "Roboto",
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
                     ],
                   ),
-                  child: TextFormField(
-                    controller: titleText,
-                    decoration: InputDecoration(
-                      hintText: "Folder title...",
-                      hintStyle: TextStyle(
-                        fontSize: 23,
-                        color: Colors.pinkAccent[100],
-                      ),
-                      border: InputBorder.none,
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Folder title...';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
 
-                /// Buttons
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-
-                    /// Cancel
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                      ),
-                      child: RaisedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                        padding: EdgeInsets.all(0),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xfffb6c72), Color(0xffff988d)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(50.0)
-                          ),
-                          child: Container(
-                            constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'CANCEL',
-                              style: TextStyle(
-                                fontSize: 27,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    /// Create
-                    Container(
-                      margin: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                      ),
-                      child: RaisedButton(
-                        onPressed: () {
-
-                          // Check if valid
-                          if (_formKey.currentState.validate()) {
-
-                            /// Set title
-                            folder.title = titleText.text;
-
-                            /// Add item
-                            _addItem(folder);
-
-                            /// Go back
-                            Navigator.pop(context);
-                          }
-                        },
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
-                        padding: EdgeInsets.all(0.0),
-                        child: Ink(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Color(0xff69d9cc), Color(0xff50ff8c)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              ),
-                              borderRadius: BorderRadius.circular(50.0)
-                          ),
-                          child: Container(
-                            constraints: BoxConstraints(maxWidth: 150.0, minHeight: 50.0),
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              'SAVE',
-                              style: TextStyle(
-                                fontSize: 27,
-                                fontFamily: "Roboto",
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                  ],
-                ),
-
-              ],
+                ],
+              ),
             ),
           );
         }
