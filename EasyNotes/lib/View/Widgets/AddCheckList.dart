@@ -308,23 +308,39 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
                                 unselectedWidgetColor: MyColors.CUSTOM_RED,
                                 backgroundColor: Colors.white,
                               ),
-                              child: CheckboxListTile(
-                                title: Text(
-                                  todoList.checkboxes[index].title.substring(0,1).toUpperCase() + todoList.checkboxes[index].title.substring(1),
-                                  style: TextStyle(
-                                    color: Color(0xFFFF8C8E),
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                value: todoList.checkboxes[index].checked,
-                                controlAffinity: ListTileControlAffinity.leading,
-                                checkColor: Colors.white,
-                                activeColor: MyColors.CUSTOM_RED,
-                                onChanged: (bool value) {
+                              child: Dismissible(
+                                key: Key(todoList.checkboxes[index].toString() + index.toString()),
+                                onDismissed: (direction) {
+
+                                  // Delete the CheckBox
                                   setState(() {
-                                    todoList.checkboxes[index].checked = value;
+                                    todoList.checkboxes.removeAt(index);
                                   });
+
+                                  // Show a SnackBar
+                                  Scaffold
+                                  .of(context)
+                                  .showSnackBar(SnackBar(content: Text("Deleted!")));
+
                                 },
+                                child: CheckboxListTile(
+                                  title: SelectableText(
+                                    todoList.checkboxes[index].title.substring(0,1).toUpperCase() + todoList.checkboxes[index].title.substring(1),
+                                    style: TextStyle(
+                                      color: Color(0xFFFF8C8E),
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  value: todoList.checkboxes[index].checked,
+                                  controlAffinity: ListTileControlAffinity.leading,
+                                  checkColor: Colors.white,
+                                  activeColor: MyColors.CUSTOM_RED,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      todoList.checkboxes[index].checked = value;
+                                    });
+                                  },
+                                ),
                               ),
                             );
                           }
