@@ -22,16 +22,12 @@ abstract class Content {
   DateTime creationDate;
   DateTime lastModification;
   bool archived;
-  DateTime oldExpiredDate;
+  final int notificationId = DateTime.now().millisecondsSinceEpoch;
   DateTime expiredDate;
 
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-// Streams are created so that app can respond to notification-related events since the plugin is initialised in the `main` function
-  final BehaviorSubject<Content> didReceiveLocalNotificationSubject = BehaviorSubject<Content>();
-
-  final BehaviorSubject<String> selectNotificationSubject =
-  BehaviorSubject<String>();
+  final BehaviorSubject<String> selectNotificationSubject = BehaviorSubject<String>();
 
   NotificationAppLaunchDetails notificationAppLaunchDetails;
 
@@ -113,13 +109,20 @@ abstract class Content {
       }
     );
 
+//    await flutterLocalNotificationsPlugin.cancel(notificationId);
+
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
-      'your channel description',
+      'EasyNotes',
+      'EasyNotes',
+      'EasyNotes notifications',
       importance: Importance.Max,
       priority: Priority.High,
-      ticker: 'ticker'
+      ticker: 'ticker',
+      enableLights: true,
+      color: MyColors.CUSTOM_RED,
+      ledColor: MyColors.CUSTOM_RED,
+      ledOnMs: 60 * 60 * 1000,
+      ledOffMs: 0,
     );
 
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
