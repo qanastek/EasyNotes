@@ -23,7 +23,6 @@ class Notes with ChangeNotifier {
   /// Current view mode
   String mode = AppSettings.DEFAULT;
 
-
   List<Content> getContentFiltered(String filter) {
 
     List<Content> res;
