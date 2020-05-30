@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 
 class MyColors {
 
-      static Color START_FADE = Colors.blue[900];
-      static Color END_FADE = Colors.greenAccent;
-      static Color CUSTOM_RED = Color(0xFFff988d);
+      static const Color CUSTOM_RED = Color(0xFFff988d);
+      static const Color CUSTOM_GREEN = Color(0xFFAFCDAE);
 
-      static List<Color> COLORS_PALLETTE = [
+      static const List<Color> COLORS_PALLETTE = [
         Color(0xFFFFECE0),
         Color(0xFFE68E84),
         Color(0xFFFDEABF),
@@ -40,7 +39,7 @@ class MyColors {
         return MyColors.COLORS_PALLETTE[Random().nextInt(MyColors.COLORS_PALLETTE.length)];
       }
 
-      static MaterialColor WHITE = const MaterialColor(0xFFFFFFFF,
+      static const MaterialColor WHITE = const MaterialColor(0xFFFFFFFF,
           const {
             50 : const Color(0xFFFFFFFF),
             100 : const Color(0xFFFFFFFF),
@@ -55,7 +54,7 @@ class MyColors {
           }
       );
 
-      static MaterialColor TOMATO = const MaterialColor(0xf14656FF,
+      static const MaterialColor TOMATO = const MaterialColor(0xf14656FF,
           const {
             50 : const Color(0xf14656FF),
             100 : const Color(0xf14656FF),

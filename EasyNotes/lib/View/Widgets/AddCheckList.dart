@@ -44,10 +44,18 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
       widget.item.favorite = !widget.item.favorite;
     });
   }
+
   /// Secure the content
-  void secure() {
+  void secure(String password) {
     setState(() {
-      widget.item.secured = !widget.item.secured;
+      widget.item.secure(password);
+    });
+  }
+
+  /// Delete the password from the content
+  void unSecure() {
+    setState(() {
+      widget.item.unSecure();
     });
   }
 
@@ -208,11 +216,11 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
 
           /// Secure
           IconButton(
-            icon: (widget.item.secured ? Icon(AddIcons.lock) : Icon(AddIcons.unlock)),
+            icon: (widget.item.password != null ? Icon(AddIcons.lock) : Icon(AddIcons.unlock)),
             color: MyColors.CUSTOM_RED,
             onPressed: () {
               /// TODO: Open password modal
-              this.secure();
+              this.secure("1234");
             },
           ),
 

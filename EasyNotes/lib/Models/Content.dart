@@ -14,7 +14,6 @@ abstract class Content {
   final String id = md5.convert(utf8.encode(DateTime.now().toString())).toString();
   String title;
   bool favorite;
-  bool secured;
   String password;
   String description;
   IconData icon;
@@ -45,7 +44,6 @@ abstract class Content {
   Content(title,favorite,secured,password,description,icon,color) {
     this.title = title;
     this.favorite = favorite;
-    this.secured = secured;
     this.password = password;
     this.description = description;
     this.icon = icon;
@@ -94,6 +92,16 @@ abstract class Content {
       subject: this.description,
       sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size,
     );
+  }
+
+  /// Secure the content
+  void secure(String password) {
+    this.password = password;
+  }
+
+  /// Delete the content security
+  void unSecure() {
+    this.password = null;
   }
 
   Future<void> showNotification() async {

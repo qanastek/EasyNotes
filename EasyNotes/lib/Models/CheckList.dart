@@ -16,7 +16,7 @@ class CheckList extends Content {
   String getDescription() {
 
     // Check if it's secured
-    if(secured == true) {
+    if(password != null) {
       return "Secured todo list";
     }
 
@@ -30,7 +30,7 @@ class CheckList extends Content {
   IconData getIcon() {
 
     // Check if it's secured
-    if(secured == true) {
+    if(password != null) {
       return AddIcons.lock;
     }
 

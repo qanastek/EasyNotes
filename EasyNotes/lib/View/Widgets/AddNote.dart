@@ -42,10 +42,18 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
       widget.item.favorite = !widget.item.favorite;
     });
   }
+
   /// Secure the content
-  void secure() {
+  void secure(String password) {
     setState(() {
-      widget.item.secured = !widget.item.secured;
+      widget.item.secure(password);
+    });
+  }
+
+  /// Delete the password from the content
+  void unSecure() {
+    setState(() {
+      widget.item.unSecure();
     });
   }
 
@@ -264,17 +272,20 @@ class AddNoteState extends State<AddNote> with SingleTickerProviderStateMixin {
 
           /// Secure
           IconButton(
-            icon: (widget.item.secured ? Icon(AddIcons.lock) : Icon(AddIcons.unlock)),
+            icon: (widget.item.password != null ? Icon(AddIcons.lock) : Icon(AddIcons.unlock)),
             color: MyColors.CUSTOM_RED,
             onPressed: () {
               /// TODO: Open password modal
-              this.secure();
+//              this.secure("1234");
             },
           ),
 
           /// Cancel
           IconButton(
-            icon: (Icon(Icons.delete_outline, color: MyColors.CUSTOM_RED,)),
+            icon: (Icon(
+              Icons.delete_outline,
+              color: MyColors.CUSTOM_RED,
+            )),
             onPressed: () {
               this.destroy();
             },

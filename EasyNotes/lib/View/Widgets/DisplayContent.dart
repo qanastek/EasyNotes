@@ -8,6 +8,7 @@ import 'package:phonecall/Models/Note.dart';
 import 'package:phonecall/Models/Setting/AppSettings.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
 import 'package:phonecall/Notes.dart';
+import 'package:phonecall/View/Widgets/PasswordScreen.dart';
 import 'package:phonecall/View/Widgets/ShowNote.dart';
 import 'package:provider/provider.dart';
 import 'package:phonecall/View/Widgets/AddNote.dart';
@@ -287,35 +288,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
                 data: item,
                 child: GestureDetector(
                   onTap: () {
-
-                    /// Note
-                    if(item is Note) {
-
-                      /// Open the item view
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => ShowNote(
-                        addItem: widget.addItem,
-                        removeItem: widget.removeContent,
-                        item: item,
-                        likeItem: widget.likeContent,
-                      )));
-                    }
-
-                    /// TodoList
-                    else if(item is CheckList) {
-
-                      /// Open the item view
-                      widget.showAddTodoListModal(
-                          context,
-                          item
-                      );
-                    }
-
-                    /// Folder
-                    else if(item is Folder) {
-
-                      /// Open the item view
-                      widget.inside(item.content);
-                    }
+                    this.clickContent(item);
                   },
                   child: GridTile(
                     child: Card(
@@ -600,6 +573,63 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
 
       ],
     );
+  }
+
+  void clickContent(Content item) async {
+    /// Note
+    if(item is Note) {
+
+//                      Navigator.push(context,MaterialPageRoute(builder: (context) => PasswordScreen(
+//                        item: item,
+//                        callback: Builder(
+//                          builder: (context) {
+//                            return ShowNote(
+//                              addItem: widget.addItem,
+//                              removeItem: widget.removeContent,
+//                              item: item,
+//                              likeItem: widget.likeContent,
+//                            );
+//                          },
+//                        ),
+//                      )));
+
+      final response = await Navigator.push(context,MaterialPageRoute(builder: (context) => PasswordScreen(
+        password: item.password,
+      )));
+
+      print("----------");
+      print(response);
+
+      /// Password screen
+      if(response == PasswordScreen.RESULT_OK) {
+
+        /// Open the item view
+        Navigator.push(context,MaterialPageRoute(builder: (context) => ShowNote(
+          addItem: widget.addItem,
+          removeItem: widget.removeContent,
+          item: item,
+          likeItem: widget.likeContent,
+        )));
+
+      }
+    }
+    /// TodoList
+    else if(item is CheckList) {
+
+      /// Open the item view
+      widget.showAddTodoListModal(
+          context,
+          item
+      );
+
+    }
+    /// Folder
+    else if(item is Folder) {
+
+      /// Open the item view
+      widget.inside(item.content);
+
+    }
   }
 }
 
