@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:phonecall/Icons/add_icons_icons.dart';
 import 'package:phonecall/Models/CheckBox.dart';
 import 'package:phonecall/Models/CheckList.dart';
 import 'package:phonecall/Models/Content.dart';
-import 'package:phonecall/Models/Folder.dart';
 import 'package:phonecall/Models/Note.dart';
 import 'package:phonecall/Models/Setting/AppSettings.dart';
 
