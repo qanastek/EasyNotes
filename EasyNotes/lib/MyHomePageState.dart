@@ -8,7 +8,6 @@ import 'package:phonecall/Models/Folder.dart';
 import 'package:phonecall/Models/Note.dart';
 import 'package:phonecall/Models/Setting/AppSettings.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
-import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/AddCheckList.dart';
 import 'package:phonecall/View/Widgets/DisplayContent.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +41,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
   String _mode = "normal";
 
   // All the notes (ChangeNotifier)
-  Notes notes = Notes();
+  Folder notes = Folder.empty();
 
   /// Constructor
   MyHomePageState() {
@@ -69,7 +68,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
     });
   }
 
-  void _inside(Notes n) {
+  void _inside(Folder n) {
     setState(() {
       notes = n;
     });
@@ -200,7 +199,7 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                     )));
                   });
                 },
-                inside: (Notes notes) {
+                inside: (Folder notes) {
                   setState(() {
                     _inside(notes);
                   });

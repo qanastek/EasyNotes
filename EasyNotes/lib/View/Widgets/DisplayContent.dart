@@ -7,7 +7,6 @@ import 'package:phonecall/Models/Folder.dart';
 import 'package:phonecall/Models/Note.dart';
 import 'package:phonecall/Models/Setting/AppSettings.dart';
 import 'package:phonecall/Models/Setting/MyColors.dart';
-import 'package:phonecall/Notes.dart';
 import 'package:phonecall/View/Widgets/PasswordScreen.dart';
 import 'package:phonecall/View/Widgets/ShowNote.dart';
 import 'package:provider/provider.dart';
@@ -16,11 +15,11 @@ import 'package:dotted_border/dotted_border.dart';
 
 typedef ContentDeleteCallback = void Function(Content item);
 typedef CheckListShowCallback = void Function(BuildContext context, Content item);
-typedef InsideCallback = void Function(Notes notes);
+typedef InsideCallback = void Function(Folder notes);
 
 class DisplayContent extends StatefulWidget {
 
-  final Notes notes;
+  final Folder notes;
   final ContentDeleteCallback removeContent;
   final ContentDeleteCallback likeContent;
   final ContentDeleteCallback addItem;
@@ -627,7 +626,7 @@ class DisplayContentState extends State<DisplayContent> with SingleTickerProvide
     else if(item is Folder) {
 
       /// Open the item view
-      widget.inside(item.content);
+      widget.inside(item);
 
     }
   }
