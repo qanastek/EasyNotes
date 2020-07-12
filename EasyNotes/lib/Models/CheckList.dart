@@ -8,7 +8,7 @@ class CheckList extends Content {
 
   List<CheckBox> checkboxes;
 
-  CheckList(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description, Icons.format_list_bulleted,color) {
+  CheckList(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description,color) {
     this.checkboxes = List<CheckBox>();
   }
 

@@ -18,8 +18,9 @@ class AddCheckList extends StatefulWidget {
   final CheckList item;
 
   final ContentCallback addItem;
+  final ContentCallback removeItem;
 
-  AddCheckList({this.addItem, this.item});
+  AddCheckList({this.addItem, this.item, this.removeItem});
 
   @override
   AddCheckListState createState() => AddCheckListState();
@@ -59,9 +60,14 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
     });
   }
 
-  /// Destroy the current note
+  /// Destroy the current check list
   void destroy() {
     setState(() {
+
+      // Delete the item
+      widget.removeItem(widget.item);
+
+      // Go back
       Navigator.pop(context);
     });
   }
@@ -224,7 +230,7 @@ class AddCheckListState extends State<AddCheckList> with SingleTickerProviderSta
             },
           ),
 
-          /// Cancel
+          /// Delete
           IconButton(
             icon: (Icon(Icons.delete_outline, color: MyColors.CUSTOM_RED,)),
             onPressed: () {

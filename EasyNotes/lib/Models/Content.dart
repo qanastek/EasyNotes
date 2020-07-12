@@ -16,7 +16,6 @@ abstract class Content {
   bool favorite;
   String password;
   String description;
-  IconData icon;
   Color color;
   DateTime creationDate;
   DateTime lastModification;
@@ -41,12 +40,11 @@ abstract class Content {
   InitializationSettings initializationSettings;
 
   /// Constructor
-  Content(title,favorite,secured,password,description,icon,color) {
+  Content(title,favorite,secured,password,description,color) {
     this.title = title;
     this.favorite = favorite;
     this.password = password;
     this.description = description;
-    this.icon = icon;
 
     if(color != null) {
       this.color = color;

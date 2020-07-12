@@ -5,7 +5,7 @@ import 'package:phonecall/Models/Content.dart';
 
 class Note extends Content {
 
-  Note(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description, Icons.note,color);
+  Note(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description,color);
 
   @override
   String getDescription() {

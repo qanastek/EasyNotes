@@ -6,6 +6,8 @@ EasyNotes is an easy to use notes app with folders to manages your ideas and pro
 
 ![Preview](GithubAssets/Preview.png)
 
+⚠️ Important: The data persistency wasn't already implemented ! ⚠️
+
 ## Installation
 Here is the procedure to install this software :
 1. Download the *.APK* in the release section

@@ -195,6 +195,11 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                   setState(() {
                     Navigator.push(context,MaterialPageRoute(builder: (context) => AddCheckList(
                       addItem: _addItem,
+                      removeItem: (Content item) {
+                        setState(() {
+                          _removeContent(item);
+                        });
+                      },
                       item: item,
                     )));
                   });
@@ -642,6 +647,11 @@ class MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMi
                             "",
                             MyColors.randomColor()
                         ),
+                        removeItem: (Content item) {
+                          setState(() {
+                            _removeContent(item);
+                          });
+                        },
                       ))),
                     },
                   ),

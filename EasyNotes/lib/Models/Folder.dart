@@ -23,9 +23,9 @@ class Folder extends Content with ChangeNotifier {
   String mode = AppSettings.DEFAULT;
 
   /// Constructor
-  Folder.empty(): super("", false, false, "", "", Icons.folder,null);
+  Folder.empty(): super("", false, false, "", "", null);
 
-  Folder(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description, Icons.folder,color);
+  Folder(title,favorite,secured,password,description,color): super(title, favorite, secured, password, description,color);
 
   @override
   String getDescription() {
